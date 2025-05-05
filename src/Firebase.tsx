@@ -1,11 +1,8 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, setDoc, updateDoc, getDocs, collection, deleteDoc, where, doc, query} from "firebase/firestore";
+import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { setDoc, updateDoc, getDocs, collection, deleteDoc, where, doc, query, getFirestore} from "firebase/firestore";
 
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: "AIzaSyD7W5fdt5iUlwPLRPV1gTGwxLASEUz59DA",
     authDomain: "libreria-commercialisti.firebaseapp.com",
     databaseURL: "https://libreria-commercialisti-default-rtdb.europe-west1.firebasedatabase.app",
@@ -16,11 +13,11 @@ const firebaseConfig = {
     measurementId: "G-ZZGDR7PMRM"
 };
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-
-// Add a new document in collection "libri"
-const AddDocument = async (isbn:number, title:string, authors:string, date:number, house:string, category:string) => {
+/* FIRESTORE */
+export const AddDocument = async (isbn: number, title: string, authors: string, date: number, house: string, category: string) => {
     await setDoc(doc(db, "libri", isbn.toString()), {
         anno_pubblicazione: date,
         autori: authors,
@@ -30,16 +27,13 @@ const AddDocument = async (isbn:number, title:string, authors:string, date:numbe
     });
 }
 
-// Add a new document in collection "categorie"
-const AddCategory = async (category:string) => {
+export const AddCategory = async (category: string) => {
     await setDoc(doc(db, "categorie", category), {
         categoria: category
     });
 }
 
-
-// Update an existing document in collection "libri"
-const UpdateDocument = async (isbn:number, title:string, authors:string, date:number, house:string, category:string) => {
+export const UpdateDocument = async (isbn: number, title: string, authors: string, date: number, house: string, category: string) => {
     await updateDoc(doc(db, "libri", isbn.toString()), {
         anno_pubblicazione: date,
         autori: authors,
@@ -49,9 +43,7 @@ const UpdateDocument = async (isbn:number, title:string, authors:string, date:nu
     });
 }
 
-
-// Get all documents in collection "libri"
-const GetDocuments = async () => {
+export const GetDocuments = async () => {
     const q = query(collection(db, "libri"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -59,8 +51,7 @@ const GetDocuments = async () => {
     })
 }
 
-// Get all documents in collection "categorie"
-const GetCategories = async () => {
+export const GetCategories = async () => {
     const q = query(collection(db, "categorie"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -68,14 +59,11 @@ const GetCategories = async () => {
     })
 }
 
-
-// Delete a specific document in collection "libri"
-const DeleteDocument = async (isbn:number) => {
+export const DeleteDocument = async (isbn: number) => {
     await deleteDoc(doc(db, "libri", isbn.toString()));
 }
 
-// Delete a document in collection "categorie"
-const DeleteCategory = async (category:string) => {
+export const DeleteCategory = async (category: string) => {
     await deleteDoc(doc(db, "categorie", category));
     const q = query(collection(db, "libri"), where("categoria", "==", category));
     const querySnapshot = await getDocs(q);
@@ -86,4 +74,82 @@ const DeleteCategory = async (category:string) => {
     });
 }
 
-export { AddDocument, UpdateDocument, GetDocuments, GetCategories, AddCategory, DeleteCategory, DeleteDocument };
+export const addUsers = async (email: string, nome: string, cognome: string, data: string, username: string) => {
+    await setDoc(doc(db, "utenti", email), {
+        nome: nome,
+        cognome: cognome,
+        data_nascita: data,
+        username: username,
+        id: email
+    });
+}
+
+export const getUser = async (email: string) => {
+    const q = query(collection(db, "utenti"), where("id", "==", email));
+    const querySnapshot = await getDocs(q);
+    let user = {
+        nome: '',
+        cognome: '',
+        data_nascita: '',
+        username: '',
+        id: ''
+    };
+    querySnapshot.forEach((doc) => {
+        user = {
+            nome: doc.data().nome,
+            cognome: doc.data().cognome,
+            data_nascita: doc.data().data_nascita,
+            username: doc.data().username,
+            id: doc.data().id
+        };
+    });
+    return user;
+}
+
+
+/* AUTENTICAZIONE */
+
+export const createUser = async (email: string, password: string) => {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        return userCredential.user;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error('Errore Firebase:', error.message);
+        }
+        throw error;
+    }
+}
+
+export const signInUser = async (email: string, password: string) => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        return userCredential.user;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error('Errore Firebase:', error.message);
+        }
+        throw error;
+    }
+}
+
+export const logOutUser = async () => {
+    try {
+        await signOut(auth);
+    } catch (error) {
+        console.error('Errore di logout:', error);
+        throw error;
+    }
+};
+
+export const resetPassword = async (email: string) => {
+    sendPasswordResetEmail(auth, email)
+        .then(() => {
+            console.log('Email di reset password inviata');
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+        });
+}
