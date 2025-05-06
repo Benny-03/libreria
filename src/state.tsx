@@ -2,8 +2,6 @@
 import { createContext, use, useState } from "react";
 
 const AuthContext = createContext({
-    authenticated: false,
-    setAuthenticated: (value: boolean) => {},
     nome: '',
     setNome: (value: string) => {},
     cognome: '',
@@ -16,19 +14,19 @@ const AuthContext = createContext({
     setData: (value: string) => {}
 });
 
+let userStorage = localStorage.getItem('user');
+userStorage = userStorage ? JSON.parse(userStorage) : null;
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [authenticated, setAuthenticated] = useState(false);
-    const [nome, setNome] = useState('');
-    const [cognome, setCognome] = useState('');
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [data, setData] = useState('');
+    const [nome, setNome] = useState(userStorage ? userStorage.nome : '');
+    const [cognome, setCognome] = useState(userStorage ? userStorage.cognome : '');
+    const [username, setUsername] = useState(userStorage ? userStorage.username : '');
+    const [email, setEmail] = useState(userStorage ? userStorage.id : '');
+    const [data, setData] = useState(userStorage ? userStorage.data_nascita : '');
 
     return (
         <AuthContext.Provider 
             value={{ 
-                authenticated,
-                setAuthenticated,
                 nome,
                 setNome,
                 cognome,
@@ -38,7 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 email,
                 setEmail,
                 data,
-                setData 
+                setData
             }}
         >
             {children}

@@ -16,6 +16,9 @@
 * {
     box-sizing: border-box;
     font-family: "Wix Madefor Display", sans-serif !important;
+    --blue: #3CB4FF;
+    --light-blue: #A3DCFF;
+    --dark-blue: #139cf1;
 }
 
 html,
@@ -23,6 +26,8 @@ body {
     scroll-behavior: smooth;
     padding: 0;
     margin: 0;
+    height: 100%;
+    width: 100%;
 }
 
 .fas {
@@ -52,4 +57,8 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+#root {
+    height: 100%;
 }

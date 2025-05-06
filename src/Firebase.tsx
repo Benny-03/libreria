@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { setDoc, updateDoc, getDocs, collection, deleteDoc, where, doc, query, getFirestore} from "firebase/firestore";
+import { setDoc, updateDoc, getDocs, collection, deleteDoc, where, doc, query, getFirestore } from "firebase/firestore";
 
 export const firebaseConfig = {
     apiKey: "AIzaSyD7W5fdt5iUlwPLRPV1gTGwxLASEUz59DA",
@@ -152,4 +152,15 @@ export const resetPassword = async (email: string) => {
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
         });
+}
+
+
+/* ERRORI */
+export function isFirebaseError(error: unknown): error is { code: string; message: string } {
+    return (
+        typeof error === 'object' &&
+        error !== null &&
+        'code' in error &&
+        'message' in error
+    );
 }

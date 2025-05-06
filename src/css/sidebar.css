@@ -1,0 +1,70 @@
+.fa-user-circle-o::before {
+    content: "\f2be";
+}
+
+.fa-bookmark-o::before {
+    content: "\f097";
+}
+
+.fa-tags::before {
+    content: "\f02c";
+}
+
+.sidebar {
+    height: 100%;
+    position: absolute;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    width: 20%;
+    background-color: #FCFCFC;
+}
+
+.sidebar .img {
+    width: 55px;
+}
+
+.sidebar .utente {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 15px;
+}
+
+.sidebar .utente-info h4 {
+    margin: 0;
+    font-size: 19px;
+}
+
+.sidebar .utente-info p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.sidebar .nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 50px;
+    width: 100%;
+}
+
+.sidebar .link {
+    display: flex;
+    gap: 15px;
+    padding: 0px 10px;
+}
+
+.sidebar .fas {
+    font-size: 20px;
+}
+
+.sidebar .link:hover {
+    text-decoration: none;
+    background-color: var(--blue);
+    border-radius: 10px;
+    color: white;
+}
