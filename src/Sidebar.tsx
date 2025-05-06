@@ -1,5 +1,5 @@
 import './css/sidebar.css';
-import image from './images/caffe.png';
+import image from './images/libri.png';
 import { useAuth } from './state';
 
 function Sidebar() {
@@ -15,14 +15,15 @@ function Sidebar() {
                     <p style={{textTransform: "capitalize"}}>{nome} {cognome}</p>
                 </div>
             </a>
+            <div className='line'></div>
             <div className='nav-link'>
                 <a className='link libreria' href='/library/home'>
                     <i className='fas fa-bookmark-o'></i>
-                    <p>Libri</p>
+                    <p style={{fontSize: "18px"}}>Libri</p>
                 </a>
                 <a className='link categorie' href='/library/categories'>
                     <i className='fas fa-tags'></i>
-                    <p>Categorie</p>
+                    <p style={{fontSize: "18px"}}>Categorie</p>
                 </a>
             </div>
         </div>
