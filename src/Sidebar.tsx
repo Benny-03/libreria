@@ -8,7 +8,7 @@ function Sidebar() {
     return (
         <div className="sidebar">
             <h2 style={{color: "var(--dark-blue)", fontWeight: "800", marginTop: "0"}}>LIBRERIA</h2>
-            <a className='utente' href='/library/utente'>
+            <a className='utente' href='/library/user'>
                 <img src={image} className='img'/>
                 <div className='utente-info'>
                     <h4 style={{textTransform: "capitalize"}}>{username}</h4>

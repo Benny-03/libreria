@@ -5,8 +5,134 @@
     background-color: #F0F0F0;
 }
 
-.home-page h1 {
-    left: 22%;
-    padding-left: 20px;
-    position: relative;
+.home-page .site-content {
+    width: calc(100% - 200px);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 20px 20px 20px;
+    gap: 20px;
+}
+
+.home-page .site-content h1 {
+    margin-bottom: 0;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 900;
+    font-size: 36px;
+}
+
+.table {
+    background-color: white;
+    padding: 25px;
+    border-radius: 20px;
+    border: 2px solid var(--blue);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1092px;
+}
+
+thead {
+    text-align: center;
+    font-size: 18px;
+    color: var(--dark-blue);
+}
+
+tbody {
+    text-align: center;
+}
+
+tr {
+    height: auto;
+}
+
+tbody tr:hover {
+    background-color: rgb(163, 220, 255, 0.4);
+    cursor: pointer;
+}
+
+td,
+th {
+    padding: 10px;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+}
+
+th {
+    padding: 10px 0px;
+    width: 10%;
+}
+
+.add-book {
+    display: flex;
+    justify-content: end;
+}
+
+.add-book button {
+    margin: 0;
+    width: 100px;
+    background: var(--blue);
+}
+
+.add-book button:hover {
+    background: var(--dark-blue);
+}
+
+.box-popup.add form {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.box-popup.add .popup {
+    width: 60%;
+    height: 60%;
+    top: 20%;
+    left: 20%;
+    justify-content: flex-start;
+}
+
+.box-popup.add .row {
+    display: flex;
+    gap: 20px;
+    font-size: 17px;
+}
+
+.box-popup.add .box-autori {
+    width: 100%;
+}
+
+.box-popup.add .box-autori p {
+    margin: 0;
+    font-size: 12px;
+    color: red;
+    text-align: end;
+}
+
+.box-popup.add select {
+    width: 50%;
+    height: 33px;
+    font-size: 17px;
+    text-align: center;
+}
+
+.box-popup.add .close {
+    margin: 0;
+    background: transparent;
+    color: black;
+    height: auto;
+    display: flex;
+    justify-content: start;
+}
+
+.box-popup.add .title {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
 }

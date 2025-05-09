@@ -16,9 +16,9 @@
 * {
     box-sizing: border-box;
     font-family: "Wix Madefor Display", sans-serif !important;
-    --blue: #3CB4FF;
-    --light-blue: #A3DCFF;
-    --dark-blue: #139cf1;
+    --blue: rgb(60, 180, 255);
+    --light-blue: rgb(163, 220, 255);
+    --dark-blue: rgb(19, 156, 241);
 }
 
 html,
@@ -37,6 +37,26 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.fa-envelope-o::before {
+    content: '\f003';
+}
+
+.fa-lock::before {
+    content: '\f023';
+}
+
+.fa-clock-o::before {
+    content: '\f017';
+}
+
+.fa-user-o::before {
+    content: '\f007';
+}
+
+.fa-close::before {
+    content: '\f00d';
 }
 
 button {

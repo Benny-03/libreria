@@ -6,22 +6,6 @@
     height: 100%;
 }
 
-.fa-envelope-o::before {
-    content: '\f003';
-}
-
-.fa-lock::before {
-    content: '\f023';
-}
-
-.fa-clock-o::before {
-    content: '\f017';
-}
-
-.fa-user-o::before {
-    content: '\f007';
-}
-
 .register-page, .login-page {
     margin: 3%;
     height: 700px;
@@ -80,6 +64,7 @@ label {
     display: flex;
     gap: 10px;
     width: 100%;
+    align-items: center;
 }
 
 input {
@@ -87,6 +72,12 @@ input {
     border-bottom: solid 1px black;
     background-color: transparent;
     width: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button
+{
+   -webkit-appearance: none;
 }
 
 .forgot-password {

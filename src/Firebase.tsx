@@ -23,7 +23,8 @@ export const AddDocument = async (isbn: number, title: string, authors: string, 
         autori: authors,
         casa_editrice: house,
         titolo: title,
-        categoria: category
+        categoria: category,
+        id: isbn
     });
 }
 
@@ -39,24 +40,29 @@ export const UpdateDocument = async (isbn: number, title: string, authors: strin
         autori: authors,
         casa_editrice: house,
         titolo: title,
-        categoria: category
+        categoria: category,
+        id: isbn
     });
 }
 
 export const GetDocuments = async () => {
+    const data = [{}];
     const q = query(collection(db, "libri"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-    })
+        data.push(doc.data());
+    });
+    return data;
 }
 
 export const GetCategories = async () => {
+    const data = [{}];
     const q = query(collection(db, "categorie"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-    })
+        data.push(doc.data());
+    });
+    return data;
 }
 
 export const DeleteDocument = async (isbn: number) => {
