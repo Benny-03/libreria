@@ -25,8 +25,7 @@
 .table {
     background-color: white;
     padding: 25px;
-    border-radius: 20px;
-    border: 2px solid var(--blue);
+    border: 1px solid var(--blue);
     overflow-x: auto;
 }
 
@@ -52,7 +51,6 @@ tr {
 
 tbody tr:hover {
     background-color: rgb(163, 220, 255, 0.4);
-    cursor: pointer;
 }
 
 td,
@@ -81,7 +79,15 @@ th {
     background: var(--dark-blue);
 }
 
-.box-popup.add form {
+.add-book .popup button {
+    width: 100%;
+}
+
+.home-page .popup {
+    justify-content: space-around;
+}
+
+.box-popup.add form, .box-popup.modify form {
     height: 50%;
     width: 100%;
     display: flex;
@@ -90,39 +96,40 @@ th {
     padding-top: 10px;
 }
 
-.box-popup.add .popup {
-    width: 60%;
-    height: 60%;
-    top: 20%;
-    left: 20%;
+.box-popup.add .popup, .box-popup.modify .popup {
+    width: 54%;
+    height: 50%;
+    top: 25%;
+    left: 23%;
     justify-content: flex-start;
+    gap: 26px;
 }
 
-.box-popup.add .row {
+.box-popup.add .row, .box-popup.modify .row {
     display: flex;
     gap: 20px;
     font-size: 17px;
 }
 
-.box-popup.add .box-autori {
+.box-popup.add .box-autori, .box-popup.modify .box-autori {
     width: 100%;
 }
 
-.box-popup.add .box-autori p {
+.box-popup.add .box-autori p, .box-popup.modify .box-autori p {
     margin: 0;
     font-size: 12px;
     color: red;
     text-align: end;
 }
 
-.box-popup.add select {
+.box-popup.add select, .box-popup.modify select {
     width: 50%;
     height: 33px;
     font-size: 17px;
     text-align: center;
 }
 
-.box-popup.add .close {
+.box-popup.add .close, .box-popup.modify .close {
     margin: 0;
     background: transparent;
     color: black;
@@ -131,8 +138,28 @@ th {
     justify-content: start;
 }
 
-.box-popup.add .title {
+.box-popup.add .title, .box-popup.modify .title {
     display: flex;
     width: 100%;
     flex-direction: column;
+}
+
+.home-page .btn-delete,
+.home-page .btn-modify {
+    margin: 0;
+    width: 40px;
+    border-radius: 50%;
+    background: var(--dark-blue);
+    height: 40px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-page .btn-delete {
+    margin-right: 5px;
+}
+
+.home-page .btn-modify {
+    margin-left: 5px;
 }

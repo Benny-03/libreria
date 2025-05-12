@@ -1,17 +1,16 @@
-import './css/login-register.css';
-import { signInUser, resetPassword, getUser } from './Firebase';
+import '../../css/login-register.css';
+import { signInUser, resetPassword, getUser } from '../../Firebase';
 import { useState } from 'react';
-import image from './images/login-image.jpg';
-import { useAuth } from './state';
-import { isFirebaseError } from './Firebase';
+import image from '../../images/login-image.jpg';
+import { useAuth } from '../../state';
+import { isFirebaseError } from '../../Firebase';
 import { useNavigate } from 'react-router';
 
 const Login = () => {
-    const { email, setEmail} = useAuth();
+    const { email, setEmail, message, setMessage} = useAuth();
     const [password, setPassword] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [flagPassword, setFlagPassword] = useState(false);
-    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const togglePopup = () => {
@@ -37,12 +36,12 @@ const Login = () => {
         } catch (error) {
             if (isFirebaseError(error)) {
                 if (error.code === 'auth/invalid-credential') {
-                    setError("Credenziali non valide");
+                    setMessage("Credenziali non valide");
                 } else {
-                    setError("Errore Firebase");
+                    setMessage("Errore Firebase");
                 }
             } else {
-                setError("Errore sconosciuto");
+                setMessage("Errore sconosciuto");
             }
             togglePopup();
         }
@@ -99,7 +98,7 @@ const Login = () => {
                 <div className='box-popup'>
                     <div className='popup'>
                         <h1 style={{textAlign: "center"}}>Errore durante l'accesso</h1>
-                        <p style={{textAlign: "center"}}>{error}</p>
+                        <p style={{textAlign: "center"}}>{message}</p>
                         <button onClick={togglePopup}>Chiudi</button>
                     </div>
                 </div>

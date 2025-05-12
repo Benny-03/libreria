@@ -13,6 +13,8 @@ const AuthContext = createContext({
     setEmail: (value: string) => {},
     data: '',
     setData: (value: string) => {},
+    message: '',
+    setMessage: (value: string) => {}
     // books: [],
     // setBooks: (value: any) => {}
 });
@@ -26,6 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [username, setUsername] = useState(userStorage ? userStorage.username : '');
     const [email, setEmail] = useState(userStorage ? userStorage.id : '');
     const [data, setData] = useState(userStorage ? userStorage.data_nascita : '');
+    const [message, setMessage] = useState('');
     // const [books, setBooks] = useState([]);
 
     // const fetchBooks = async () => {
@@ -56,6 +59,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 setEmail,
                 data,
                 setData,
+                message,
+                setMessage
                 // books,
                 // setBooks
             }}

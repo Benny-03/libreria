@@ -18,14 +18,23 @@ const db = getFirestore(app);
 
 /* FIRESTORE */
 export const AddDocument = async (isbn: number, title: string, authors: string, date: number, house: string, category: string) => {
-    await setDoc(doc(db, "libri", isbn.toString()), {
-        anno_pubblicazione: date,
-        autori: authors,
-        casa_editrice: house,
-        titolo: title,
-        categoria: category,
-        id: isbn
-    });
+    const document = await GetDocument(isbn);
+    if (document.length > 1) {
+        console.log("Il libro è già presente");
+        return false;
+    }else {
+        await setDoc(doc(db, "libri", isbn.toString()), {
+            anno_pubblicazione: date,
+            autori: authors,
+            casa_editrice: house,
+            titolo: title,
+            categoria: category,
+            id: isbn
+        });
+        console.log("Il libro è stato aggiunto");
+        return true;
+    }
+
 }
 
 export const AddCategory = async (category: string) => {
@@ -48,6 +57,16 @@ export const UpdateDocument = async (isbn: number, title: string, authors: strin
 export const GetDocuments = async () => {
     const data = [{}];
     const q = query(collection(db, "libri"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        data.push(doc.data());
+    });
+    return data;
+}
+
+export const GetDocument = async (isbn: number) => {
+    const data = [{}];
+    const q = query(collection(db, "libri"), where("id", "==", isbn));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         data.push(doc.data());

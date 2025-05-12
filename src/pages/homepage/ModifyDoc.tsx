@@ -1,0 +1,122 @@
+import { useEffect, useState } from "react";
+import '../../css/homepage.css';
+import { GetCategories, UpdateDocument } from "../../Firebase";
+
+const fetchCategories = async () => {
+  try {
+    const categories = await GetCategories();
+    return categories;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+}
+
+function ModifyDoc(props) {
+  const [flagModify, setFlagModify] = useState(false);
+  const [category, setCategory] = useState([]);
+  const [popup, setPopup] = useState(false);
+
+  const book = {
+    id: props.book.id,
+    titolo: '',
+    autori: [],
+    casa_editrice: '',
+    anno_pubblicazione: '',
+    categoria: ''
+  }
+
+  const toggleFlag = () => {
+    setFlagModify(!flagModify);
+  }
+
+  const togglePopup = () => {
+    setPopup(!popup);
+    if (popup) {
+      window.location.reload();
+    }
+  }
+
+  const modifyBook = async () => {
+    await UpdateDocument(book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria);
+    setPopup(true);
+    setFlagModify(false);
+  }
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      const categoriesData = await fetchCategories();
+      setCategory(categoriesData);
+    }
+    loadCategories();
+  }, []);
+
+  return (
+    <>
+      <button className='btn-modify' onClick={toggleFlag}><i className='fas fa-pencil'></i></button>
+      {flagModify && (
+        <div className='box-popup modify'>
+          <div className='popup'>
+            <div className='title'>
+              <button className='close' onClick={toggleFlag}>
+                <i className='fas fa-close' style={{ fontSize: "20px" }}></i>
+              </button>
+              <h1 style={{ textAlign: "center" }}>Modifica libro</h1>
+              <p style={{margin: "0"}}> ISBN: {props.book.id}</p>
+            </div>
+            <form>
+              <div className='row'>
+                <label htmlFor="titolo"> Titolo:
+                  <input type="text" id="titolo" value={props.book.titolo} autoComplete="current-titolo" onChange={(e) => book.titolo = e.target.value} />
+                </label>
+                <label htmlFor="anno"> Anno di pubblicazione:
+                  <input type="number" id="anno" value={props.book.anno_pubblicazione} autoComplete="current-anno" onChange={(e) => book.anno_pubblicazione = e.target.value} />
+                </label>
+              </div>
+              <div className='row'>
+                <div className='box-autori'>
+                  <label htmlFor="autori"> Autori:
+                    <input type="text" id="autori" autoComplete="current-autori" value={props.book.autori.join(", ")} onChange={(e) => {
+                      book.autori = e.target.value.split(', ').map((author: string) => author);
+                    }} />
+                  </label>
+                  <p>Devono essere divisi da una virgola</p>
+                </div>
+              </div>
+              <div className='row'>
+                <label htmlFor="casa"> Casa editrice:
+                  <input type="text" id="casa" value={props.book.casa_editrice} autoComplete="current-casa" onChange={(e) => book.casa_editrice = e.target.value} />
+                </label>
+                <label htmlFor='categorie'> Categoria:
+                  <select id='categorie' onChange={(e) => book.categoria = e.target.value} defaultValue={props.book.categoria}>
+                    {category.map((cat, index) => {
+                      if (!cat.categoria) {
+                        return null;
+                      }
+                      return (
+                        <option key={index} value={cat.categoria}>{cat.categoria}</option>
+                      )
+                    })}
+                    <option value="Nessuna">Nessuna</option>
+                  </select>
+                </label>
+              </div>
+            </form>
+            <button onClick={modifyBook}>Salva</button>
+          </div>
+        </div>
+      )}
+      {popup && (
+        <div className='box-popup'>
+          <div className='popup'>
+            <h1 style={{ textAlign: "center" }}>Il libro è stato modificato correttamente !</h1>
+            <button onClick={togglePopup}>Chiudi</button>
+          </div>
+        </div>
+      )}
+    </>
+
+  );
+}
+
+export default ModifyDoc;

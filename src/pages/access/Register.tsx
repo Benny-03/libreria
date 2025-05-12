@@ -1,17 +1,16 @@
 import { useState } from 'react';
-import './css/login-register.css';
-import { createUser, getUser } from './Firebase';
-import { addUsers } from './Firebase';
-import image from './images/login-image.jpg';
-import { useAuth } from './state';
-import { isFirebaseError } from './Firebase';
+import '../../css/login-register.css';
+import { createUser, getUser } from '../../Firebase';
+import { addUsers } from '../../Firebase';
+import image from '../../images/login-image.jpg';
+import { useAuth } from '../../state';
+import { isFirebaseError } from '../../Firebase';
 
 function Register() {
-    const { email, setEmail, username, setUsername, nome, setNome, cognome, setCognome, data, setData} = useAuth();
+    const { email, setEmail, username, setUsername, nome, setNome, cognome, setCognome, data, setData, message, setMessage} = useAuth();
     const [password, setPassword] = useState('');
     const [isPresent, setIsPresent] = useState(false);
     const [flagPassword, setFlagPassword] = useState(false);
-    const [error, setError] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [registered, setRegistered] = useState(false);
 
@@ -50,7 +49,7 @@ function Register() {
                     setPassword('');
                 }
             } else {
-                setError("Errore sconosciuto");
+                setMessage("Errore sconosciuto");
             }
         }
     };
@@ -110,7 +109,7 @@ function Register() {
                 <div className='box-popup'>
                     <div className='popup'>
                         <h1 style={{textAlign: "center"}}>Errore durante la registrazione</h1>
-                        <p style={{textAlign: "center"}}>{error}</p>
+                        <p style={{textAlign: "center"}}>{message}</p>
                         <button onClick={toggleOpen}>Chiudi</button>
                     </div>
                 </div>

@@ -1,12 +1,12 @@
 import { createRoot } from 'react-dom/client'
 import { Routes, Route, BrowserRouter } from 'react-router'
 import './css/index.css'
-import HomePage from './HomePage'
-import Login from './Login'
-import Register from './Register'
-import Categories from './Categories'
+import HomePage from './pages/homepage/HomePage'
+import Login from './pages/access/Login'
+import Register from './pages/access/Register'
+import Categories from './pages/categories/Categories'
 import { AuthProvider } from './state'
-import User from './User'
+import User from './pages/user/User'
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
