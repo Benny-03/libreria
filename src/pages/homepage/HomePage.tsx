@@ -47,7 +47,7 @@ function HomePage() {
                                 <th>Autori</th>
                                 <th>Casa editrice</th>
                                 <th>Anno di pubblicazione</th>
-                                <th>Azioni</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>

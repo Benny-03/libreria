@@ -105,6 +105,11 @@ th {
     gap: 26px;
 }
 
+.box-popup.modify .popup {
+    height: 58%;
+    top: 21%;
+}
+
 .box-popup.add .row, .box-popup.modify .row {
     display: flex;
     gap: 20px;
@@ -124,9 +129,13 @@ th {
 
 .box-popup.add select, .box-popup.modify select {
     width: 50%;
-    height: 33px;
+    height: 28px;
     font-size: 17px;
     text-align: center;
+}
+
+.box-popup.modify select {
+    width: 200px;
 }
 
 .box-popup.add .close, .box-popup.modify .close {
@@ -142,6 +151,10 @@ th {
     display: flex;
     width: 100%;
     flex-direction: column;
+}
+
+.box-popup.add label, .box-popup.modify label {
+    text-align: start;
 }
 
 .home-page .btn-delete,

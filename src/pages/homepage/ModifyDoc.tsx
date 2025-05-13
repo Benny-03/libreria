@@ -16,15 +16,14 @@ function ModifyDoc(props) {
   const [flagModify, setFlagModify] = useState(false);
   const [category, setCategory] = useState([]);
   const [popup, setPopup] = useState(false);
-
-  const book = {
+  const [book, setBook] = useState({
     id: props.book.id,
-    titolo: '',
-    autori: [],
-    casa_editrice: '',
-    anno_pubblicazione: '',
-    categoria: ''
-  }
+    titolo: props.book.titolo,
+    autori: props.book.autori,
+    casa_editrice: props.book.casa_editrice,
+    anno_pubblicazione: props.book.anno_pubblicazione,
+    categoria: props.book.categoria
+  });
 
   const toggleFlag = () => {
     setFlagModify(!flagModify);
@@ -62,33 +61,31 @@ function ModifyDoc(props) {
                 <i className='fas fa-close' style={{ fontSize: "20px" }}></i>
               </button>
               <h1 style={{ textAlign: "center" }}>Modifica libro</h1>
-              <p style={{margin: "0"}}> ISBN: {props.book.id}</p>
+              <p style={{ margin: "0" }}> ISBN: {props.book.id}</p>
             </div>
             <form>
               <div className='row'>
                 <label htmlFor="titolo"> Titolo:
-                  <input type="text" id="titolo" value={props.book.titolo} autoComplete="current-titolo" onChange={(e) => book.titolo = e.target.value} />
+                  <input type="text" id="titolo" defaultValue={book.titolo} autoComplete="current-titolo" onChange={(e) => setBook({ ...book, titolo: e.target.value })} />
                 </label>
-                <label htmlFor="anno"> Anno di pubblicazione:
-                  <input type="number" id="anno" value={props.book.anno_pubblicazione} autoComplete="current-anno" onChange={(e) => book.anno_pubblicazione = e.target.value} />
-                </label>
-              </div>
-              <div className='row'>
                 <div className='box-autori'>
                   <label htmlFor="autori"> Autori:
-                    <input type="text" id="autori" autoComplete="current-autori" value={props.book.autori.join(", ")} onChange={(e) => {
-                      book.autori = e.target.value.split(', ').map((author: string) => author);
-                    }} />
+                    <input type="text" id="autori" autoComplete="current-autori" defaultValue={book.autori.join(", ")} onChange={(e) => setBook({ ...book, autori: e.target.value.split(', ').map((author: string) => author) })} />
                   </label>
                   <p>Devono essere divisi da una virgola</p>
                 </div>
               </div>
               <div className='row'>
                 <label htmlFor="casa"> Casa editrice:
-                  <input type="text" id="casa" value={props.book.casa_editrice} autoComplete="current-casa" onChange={(e) => book.casa_editrice = e.target.value} />
+                  <input type="text" id="casa" defaultValue={book.casa_editrice} autoComplete="current-casa" onChange={(e) => setBook({ ...book, casa_editrice: e.target.value })} />
                 </label>
+              </div>
+              <label htmlFor="anno"> Anno di pubblicazione:
+                <input type="number" id="anno" defaultValue={book.anno_pubblicazione} autoComplete="current-anno" onChange={(e) => setBook({ ...book, anno_pubblicazione: e.target.value })} />
+              </label>
+              <div className='row'>
                 <label htmlFor='categorie'> Categoria:
-                  <select id='categorie' onChange={(e) => book.categoria = e.target.value} defaultValue={props.book.categoria}>
+                  <select id='categorie' onChange={(e) => setBook({ ...book, categoria: e.target.value })} defaultValue={book.categoria}>
                     {category.map((cat, index) => {
                       if (!cat.categoria) {
                         return null;
