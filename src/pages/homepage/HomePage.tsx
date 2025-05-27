@@ -5,7 +5,6 @@ import { GetDocuments} from '../../Firebase';
 import DeleteDoc from './DeleteDoc';
 import ModifyDoc from './ModifyDoc';
 import AddDoc from './AddDoc';
-//import { useAuth } from './state';
 
 const fetchBooks = async () => {
     try {
@@ -18,7 +17,6 @@ const fetchBooks = async () => {
 }
 
 function HomePage() {
-    //const { books } = useAuth();
     const [books, setBooks] = useState([]);
 
     useEffect(() => {
