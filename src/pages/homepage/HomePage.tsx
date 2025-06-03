@@ -1,31 +1,12 @@
 import '../../css/homepage.css';
 import Sidebar from '../../Sidebar';
-import { useEffect, useState } from 'react';
-import { GetDocuments} from '../../Firebase';
 import DeleteDoc from './DeleteDoc';
 import ModifyDoc from './ModifyDoc';
 import AddDoc from './AddDoc';
-
-const fetchBooks = async () => {
-    try {
-        const books = await GetDocuments();
-        return books;
-    } catch (error) {
-        console.error('Error fetching books:', error);
-        return [];
-    }
-}
+import { useAuth } from '../../state';
 
 function HomePage() {
-    const [books, setBooks] = useState([]);
-
-    useEffect(() => {
-        const loadBooks = async () => {
-            const booksData = await fetchBooks();
-            setBooks(booksData);
-        }
-        loadBooks();
-    }, []);
+    const { books } = useAuth();
 
     return (
         <div className='home-page'>

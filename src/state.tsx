@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { createContext, use, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
+import { GetDocuments } from "./Firebase";
 
 const AuthContext = createContext({
     nome: '',
@@ -13,7 +14,9 @@ const AuthContext = createContext({
     data: '',
     setData: (value: string) => {},
     message: '',
-    setMessage: (value: string) => {}
+    setMessage: (value: string) => {},
+    books: [],
+    setBooks: (value: []) => {}
 });
 
 let userStorage = localStorage.getItem('user');
@@ -26,6 +29,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [email, setEmail] = useState(userStorage ? userStorage.id : '');
     const [data, setData] = useState(userStorage ? userStorage.data_nascita : '');
     const [message, setMessage] = useState('');
+    const [books, setBooks] = useState([]);
+
+    useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                const querySnapshot = await GetDocuments();
+                const booksData = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setBooks(booksData);
+            } catch (error) {
+                console.error("Errore nel recupero dei libri:", error);
+            }
+        };
+
+        fetchBooks();
+    }, []);
 
     return (
         <AuthContext.Provider 
@@ -41,7 +62,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 data,
                 setData,
                 message,
-                setMessage
+                setMessage,
+                books,
+                setBooks
             }}
         >
             {children}
