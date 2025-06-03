@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import '../../css/homepage.css';
 import { GetCategories, UpdateDocument } from "../../Firebase";
+import { useAuth } from "../../state";
 
 const fetchCategories = async () => {
   try {
@@ -13,6 +14,7 @@ const fetchCategories = async () => {
 }
 
 function ModifyDoc(props) {
+  const { setBooks } = useAuth();
   const [flagModify, setFlagModify] = useState(false);
   const [category, setCategory] = useState([]);
   const [popup, setPopup] = useState(false);
@@ -31,13 +33,11 @@ function ModifyDoc(props) {
 
   const togglePopup = () => {
     setPopup(!popup);
-    if (popup) {
-      window.location.reload();
-    }
   }
 
   const modifyBook = async () => {
     await UpdateDocument(book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria);
+    setBooks(prevBooks => prevBooks.map(b => b.id === book.id ? book : b));
     setPopup(true);
     setFlagModify(false);
   }

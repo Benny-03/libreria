@@ -4,18 +4,16 @@ import { DeleteDocument } from "../../Firebase";
 import '../../css/homepage.css';
 
 function DeleteDoc (props) {
-    const { setMessage, message } = useAuth();
+    const { setMessage, message, setBooks } = useAuth();
     const [popup, setPopup] = useState(false);
 
     const togglePopup = () => {
         setPopup(!popup);
-        if (popup) {
-            window.location.reload();
-        }
     }
     
     const Delete = async () => {
         await DeleteDocument(props.id);
+        setBooks(prevBooks => prevBooks.filter(book => book.id !== props.id));
         setMessage('Il libro è stato eliminato');
         setPopup(true);
     }

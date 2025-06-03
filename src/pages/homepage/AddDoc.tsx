@@ -14,7 +14,7 @@ const fetchCategories = async () => {
 }
 
 function AddDoc() {
-    const { setMessage, message } = useAuth();
+    const { setMessage, message, setBooks } = useAuth();
     const [category, setCategory] = useState([]);
     const [addFlag, setAddFlag] = useState(false);
     const [popup, setPopup] = useState(false);
@@ -33,15 +33,13 @@ function AddDoc() {
 
     const togglePopup = () => {
         setPopup(!popup);
-        if (popup) {
-            window.location.reload();
-        }
     }
 
     const addBook = async () => {
         const flag = await AddDocument(book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria);
         if (flag) {
             setMessage('Il libro è stato aggiunto');
+            setBooks(prevBooks => [...prevBooks, book]);
         } else {
             setMessage('Il libro è già presente');
         }

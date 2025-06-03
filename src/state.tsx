@@ -35,10 +35,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const fetchBooks = async () => {
             try {
                 const querySnapshot = await GetDocuments();
-                const booksData = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
+                console.log("Libri recuperati:", querySnapshot);
+                let booksData = [];
+                querySnapshot.map(doc => {
+                    if(doc){
+                        booksData.push(doc);
+                    }
+                })
                 setBooks(booksData);
             } catch (error) {
                 console.error("Errore nel recupero dei libri:", error);
