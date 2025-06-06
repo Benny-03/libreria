@@ -6,7 +6,6 @@ import Login from './pages/access/Login'
 import Register from './pages/access/Register'
 import Categories from './pages/categories/Categories'
 import { AuthProvider } from './state'
-import User from './pages/user/User'
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
@@ -18,7 +17,6 @@ root.render(
         <Route path='/library/register/' element={<Register />} />
         <Route path='/library/home/' element={<HomePage />} />
         <Route path='/library/categories/' element={<Categories />} />
-        <Route path='/library/user/' element={<User />} />
       </Routes>
     </AuthProvider>
   </BrowserRouter>
