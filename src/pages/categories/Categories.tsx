@@ -5,7 +5,7 @@ import AddCat from './AddCat';
 import DeleteCat from './DeleteCat';
 
 function Categories() {
-    const { category } = useAuth();
+    const { category, books } = useAuth();
 
     return (
         <div className='home-page'>
@@ -13,7 +13,7 @@ function Categories() {
             <div className='site-content'>
                 <h1>Categorie</h1>
                 <div className='add-book'>
-                    
+                    <AddCat />
                 </div>
                 <div className='table'>
                     <table>
@@ -33,9 +33,17 @@ function Categories() {
                                 return (
                                     <tr key={index}>
                                         <td>{cat.categoria}</td>
-                                        <td>libri associati</td>
+                                        <td>{books.map((book) => {
+                                            if (book.categoria === cat.categoria) {
+                                                return (
+                                                    <span key={book.id}>
+                                                        {book.titolo}, <br />
+                                                    </span>
+                                                )
+                                            }
+                                            return null;
+                                        })}</td>
                                         <td className='box-btn'>
-                                            <AddCat category={cat.categoria} />
                                             <DeleteCat category={cat.categoria} />
                                         </td>
                                     </tr>

@@ -55,14 +55,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const fetchCategories = async () => {
             try {
                 const querySnapshot = await GetCategories();
-                console.log("Libri recuperati:", querySnapshot);
+                console.log("categorie recuperate:", querySnapshot);
                 let data = [];
                 querySnapshot.map(doc => {
                     if(doc){
                         data.push(doc);
                     }
                 })
-                setBooks(data);
+                setCategory(data);
             } catch (error) {
                 console.error("Errore nel recupero dei libri:", error);
             }

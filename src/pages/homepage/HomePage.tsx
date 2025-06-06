@@ -43,7 +43,7 @@ function HomePage() {
                                         <td>{book.autori.map((autore: string) => {
                                             return (
                                                 <span key={autore}>
-                                                    {autore}<br />
+                                                    {autore}, <br />
                                                 </span>
                                             )
                                         })}</td>

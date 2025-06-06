@@ -90,7 +90,7 @@ export const DeleteDocument = async (isbn: number) => {
 }
 
 export const DeleteCategory = async (category: string) => {
-    await deleteDoc(doc(db, "categorie", category));
+    await deleteDoc(doc(db, "categorie", category.toLowerCase()));
     const q = query(collection(db, "libri"), where("categoria", "==", category));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
