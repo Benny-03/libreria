@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createContext, use, useEffect, useState } from "react";
-import { GetDocuments } from "./Firebase";
+import { GetCategories, GetDocuments } from "./Firebase";
 
 const AuthContext = createContext({
     nome: '',
@@ -16,7 +16,9 @@ const AuthContext = createContext({
     message: '',
     setMessage: (value: string) => {},
     books: [],
-    setBooks: (value: []) => {}
+    setBooks: (value: []) => {},
+    category: [],
+    setCategory: (value: []) => {},
 });
 
 let userStorage = localStorage.getItem('user');
@@ -30,6 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [data, setData] = useState(userStorage ? userStorage.data_nascita : '');
     const [message, setMessage] = useState('');
     const [books, setBooks] = useState([]);
+    const [category, setCategory] = useState([]);
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -47,8 +50,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 console.error("Errore nel recupero dei libri:", error);
             }
         };
-
         fetchBooks();
+
+        const fetchCategories = async () => {
+            try {
+                const querySnapshot = await GetCategories();
+                console.log("Libri recuperati:", querySnapshot);
+                let data = [];
+                querySnapshot.map(doc => {
+                    if(doc){
+                        data.push(doc);
+                    }
+                })
+                setBooks(data);
+            } catch (error) {
+                console.error("Errore nel recupero dei libri:", error);
+            }
+        };
+        fetchCategories();
     }, []);
 
     return (
@@ -67,7 +86,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 message,
                 setMessage,
                 books,
-                setBooks
+                setBooks,
+                category,
+                setCategory
             }}
         >
             {children}
