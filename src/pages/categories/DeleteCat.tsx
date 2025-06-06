@@ -12,7 +12,7 @@ function DeleteCat (props) {
     }
     
     const Delete = async () => {
-        await DeleteCategory(props.id);
+        await DeleteCategory(props.category);
         setCategory(prevCat => prevCat.filter(cat => cat.categoria !== props.category));
         setMessage('La categoria è stata eliminata');
         setPopup(true);

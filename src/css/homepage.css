@@ -157,6 +157,19 @@ th {
     text-align: start;
 }
 
+.box-popup.add.category .popup{
+    width: 48%;
+    height: 38%;
+    top: 31%;
+    left: 26%;
+}
+
+.box-popup.add.category form {
+    justify-content: center;
+    padding-top: 0;
+    align-items: center;
+}
+
 .home-page .btn-delete,
 .home-page .btn-modify {
     margin: 0;
@@ -175,4 +188,12 @@ th {
 
 .home-page .btn-modify {
     margin-left: 5px;
+}
+
+.home-page.categories table{
+    min-width: 630px;
+}
+
+@media screen and (max-width: 768px) {
+    
 }

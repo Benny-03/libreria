@@ -74,3 +74,38 @@
     background-color: var(--dark-blue);
     margin-top: 20px;
 }
+
+.sidebar .iniziale {
+    background-color: var(--dark-blue);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    color: white;
+    font-weight: 900;
+}
+
+.sidebar .utente:hover {
+   text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar .utente-info, .sidebar .nav-link p {
+        display: none;
+    }
+
+    .sidebar .fas {
+        font-size: 30px;
+    }
+
+    .sidebar .nav-link {
+        gap: 50px;
+    }
+
+    .sidebar .link {
+        padding: 20px;
+    }
+}

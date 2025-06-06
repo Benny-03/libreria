@@ -8,7 +8,7 @@ function Categories() {
     const { category, books } = useAuth();
 
     return (
-        <div className='home-page'>
+        <div className='home-page categories'>
             <Sidebar />
             <div className='site-content'>
                 <h1>Categorie</h1>

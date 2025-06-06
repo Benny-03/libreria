@@ -9,7 +9,8 @@ function Sidebar() {
         <div className="sidebar">
             <h2 style={{color: "var(--dark-blue)", fontWeight: "800", marginTop: "0"}}>LIBRERIA</h2>
             <a className='utente' href='/library/user'>
-                <img src={image} className='img'/>
+                {/* <img src={image} className='img'/> */}
+                <div className='iniziale'>{nome.charAt(0)}</div>
                 <div className='utente-info'>
                     <h4 style={{textTransform: "capitalize"}}>{username}</h4>
                     <p style={{textTransform: "capitalize"}}>{nome} {cognome}</p>

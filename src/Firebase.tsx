@@ -35,13 +35,22 @@ export const AddDocument = async (isbn: number, title: string, authors: string, 
         console.log("Il libro è stato aggiunto");
         return true;
     }
-
 }
 
 export const AddCategory = async (category: string) => {
-    await setDoc(doc(db, "categorie", category), {
-        categoria: category
-    });
+    console.log("Aggiungo la categoria: " + category);
+    const document = await GetCategory(category.toLowerCase());
+    console.log(document);
+    if (document.length > 1) {
+        console.log("La categoria è già presente");
+        return false;
+    }else {
+        await setDoc(doc(db, "categorie", category.toLowerCase()), {
+            categoria: category
+        });
+        console.log("La categoria è stato aggiunta");
+        return true;
+    }
 }
 
 export const UpdateDocument = async (isbn: number, title: string, authors: string, date: number, house: string, category: string) => {
@@ -78,6 +87,16 @@ export const GetDocument = async (isbn: number) => {
 export const GetCategories = async () => {
     const data = [{}];
     const q = query(collection(db, "categorie"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        data.push(doc.data());
+    });
+    return data;
+}
+
+export const GetCategory = async (category: string) => {
+    const data = [{}];
+    const q = query(collection(db, "categorie"), where("id", "==", category.toLowerCase()));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         data.push(doc.data());
