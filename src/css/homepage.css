@@ -66,13 +66,15 @@ th {
 
 .add-book {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
 }
 
 .add-book button {
     margin: 0;
-    width: 100px;
+    width: auto;
     background: var(--blue);
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .add-book button:hover {
@@ -96,7 +98,7 @@ th {
     padding-top: 10px;
 }
 
-.box-popup.add .popup, .box-popup.modify .popup {
+.box-popup.add .popup, .box-popup.modify .popup{
     width: 54%;
     height: 50%;
     top: 25%;
@@ -110,7 +112,7 @@ th {
     top: 21%;
 }
 
-.box-popup.add .row, .box-popup.modify .row {
+.box-popup.add .row, .box-popup.modify .row, .box-popup.delete-cat .row{
     display: flex;
     gap: 20px;
     font-size: 17px;
@@ -127,7 +129,7 @@ th {
     text-align: end;
 }
 
-.box-popup.add select, .box-popup.modify select {
+.box-popup.add select, .box-popup.modify select, .box-popup.delete-cat select {
     width: 50%;
     height: 28px;
     font-size: 17px;
@@ -138,7 +140,7 @@ th {
     width: 200px;
 }
 
-.box-popup.add .close, .box-popup.modify .close {
+.box-popup.add .close, .box-popup.modify .close, .box-popup.delete-cat .close, .google-books-popup .close {
     margin: 0;
     background: transparent;
     color: black;
@@ -147,7 +149,7 @@ th {
     justify-content: start;
 }
 
-.box-popup.add .title, .box-popup.modify .title {
+.box-popup.add .title, .box-popup.modify .title, .box-popup.delete-cat .title, .google-books-popup .title {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -170,6 +172,16 @@ th {
     align-items: center;
 }
 
+.box-popup.remove.book .buttons {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+.box-popup.remove.book .popup, .box-popup.delete-cat .popup, .google-books-popup .popup {
+    height: auto;
+}
+
 .home-page .btn-delete,
 .home-page .btn-modify {
     margin: 0;
@@ -190,10 +202,18 @@ th {
     margin-left: 5px;
 }
 
-.home-page.categories table{
-    min-width: 630px;
-}
-
 @media screen and (max-width: 768px) {
-    
+    .home-page {
+        flex-direction: column;
+    }
+
+    .home-page .site-content {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .home-page .site-content h1 {
+        font-size: 30px;
+        padding-bottom: 10px;
+    }
 }

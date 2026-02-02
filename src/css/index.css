@@ -67,6 +67,10 @@ body {
     content: '\f040';
 }
 
+.fa-search::before {
+    content: '\f002';
+}
+
 button {
     cursor: pointer;
     border: none;
@@ -89,4 +93,13 @@ a:hover {
 
 #root {
     height: 100%;
+}
+
+select {
+    padding: 0px 10px;
+}
+
+input:focus {
+    outline: none; 
+    box-shadow: none; 
 }

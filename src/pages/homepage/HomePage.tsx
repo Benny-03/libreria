@@ -4,9 +4,30 @@ import DeleteDoc from './DeleteDoc';
 import ModifyDoc from './ModifyDoc';
 import AddDoc from './AddDoc';
 import { useAuth } from '../../state';
+import { useState } from 'react';
+import GoogleBooks from '../../GoogleBooks';
 
 function HomePage() {
     const { books } = useAuth();
+    const [search, setSearch] = useState('');
+
+    const filteredBooks = books.filter(book => {
+        if (!book.id || !book.autori) return false;
+
+        const q = search.toLowerCase();
+
+        return (
+            book.titolo?.toLowerCase().includes(q) ||
+            book.categoria?.toLowerCase().includes(q) ||
+            book.casa_editrice?.toLowerCase().includes(q) ||
+            book.id.toString().includes(q) ||
+            book.anno_pubblicazione.toString().includes(q) ||
+            book.autori.some(autore =>
+                autore.toLowerCase().includes(q)
+            )
+        );
+    });
+
 
     return (
         <div className='home-page'>
@@ -14,7 +35,19 @@ function HomePage() {
             <div className='site-content'>
                 <h1>Raccolta libri</h1>
                 <div className='add-book'>
-                    <AddDoc />
+                    <div style={{display:'flex', gap:'10px', width:'32%'}}>
+                        <i className="fas fa-search"></i>
+                        <input
+                            type="text"
+                            placeholder="Cerca per titolo, autore, ISBN, editore o anno"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
+                    <div style={{display:'flex', flexDirection: 'row', gap: '10px'}}>
+                        <AddDoc />
+                        <GoogleBooks />
+                    </div>
                 </div>
                 <div className='table'>
                     <table>
@@ -30,8 +63,8 @@ function HomePage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {books.map((book, index) => {
-                                if (!book.id || !book.titolo || !book.autori || !book.categoria || !book.casa_editrice || !book.anno_pubblicazione) {
+                            {filteredBooks.map((book, index) => {
+                                if (!book.id || !book.autori ) {
                                     return null;
                                 }
 

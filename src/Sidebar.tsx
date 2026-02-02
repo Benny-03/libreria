@@ -6,7 +6,8 @@ function Sidebar() {
     const { nome, cognome, username } = useAuth();
 
     return (
-        <div className="sidebar">
+        <>
+        <div className="sidebar desktop-only">
             <h2 style={{color: "var(--dark-blue)", fontWeight: "800", marginTop: "0"}}>LIBRERIA</h2>
             <a className='utente' href='/library/user'>
                 {/* <img src={image} className='img'/> */}
@@ -28,6 +29,24 @@ function Sidebar() {
                 </a>
             </div>
         </div>
+        <div className="sidebar mobile-only" style={{justifyContent: 'space-between', height: 'auto', alignItems: 'center'}}>
+            <h2 style={{color: "var(--dark-blue)", fontWeight: "800", marginTop: "0", marginBottom: '0'}}>LIBRERIA</h2>
+            <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
+                <div className='nav-link' style={{flexDirection: 'row', paddingTop: '0', gap: '10px'}}>
+                    <a className='link libreria' href='/library/home'>
+                        <i className='fas fa-bookmark-o'></i>
+                    </a>
+                    <a className='link categorie' href='/library/categories'>
+                        <i className='fas fa-tags'></i>
+                    </a>
+                </div>
+                <a className='utente' href='/library/user'>
+                    <div className='iniziale'>{nome.charAt(0)}</div>
+                </a>
+            </div>
+        </div>
+        </>
+        
     );
 }
 

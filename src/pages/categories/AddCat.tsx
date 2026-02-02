@@ -33,7 +33,7 @@ function AddCat() {
 
     return (
         <>
-            <button onClick={toggleAddFlag}>Aggiungi</button>
+            <button onClick={toggleAddFlag}>Aggiungi categoria</button>
             {addFlag && (
                 <div className='box-popup add category'>
                     <div className='popup'>
@@ -45,12 +45,12 @@ function AddCat() {
                         </div>
                         <form>
                             <div className='row'>
-                                <label htmlFor="titolo"> Nome:
-                                    <input type="text" id="titolo" autoComplete="current-titolo" required placeholder='titolo' onChange={(e) => setName({ categoria: e.target.value })} />
+                                <label htmlFor="nome"> Nome:
+                                    <input type="text" id="nome" autoComplete="current-nome" required placeholder='nome categoria' onChange={(e) => setName({ categoria: e.target.value })} />
                                 </label>
                             </div>
                         </form>
-                        <button onClick={addCategory}>Aggiungi</button>
+                        <button onClick={addCategory}>Aggiungi categoria</button>
                     </div>
                 </div>
             )}

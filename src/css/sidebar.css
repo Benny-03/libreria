@@ -21,6 +21,10 @@
     background-color: #FCFCFC;
 }
 
+.sidebar.mobile-only {
+    display: none;
+}
+
 .sidebar .img {
     width: 55px;
 }
@@ -98,7 +102,7 @@
     }
 
     .sidebar .fas {
-        font-size: 30px;
+        font-size: 23px;
     }
 
     .sidebar .nav-link {
@@ -106,6 +110,16 @@
     }
 
     .sidebar .link {
-        padding: 20px;
+        padding: 10px;
+    }
+
+    .sidebar.desktop-only {
+        display: none;
+    }
+
+    .sidebar.mobile-only {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
     }
 }

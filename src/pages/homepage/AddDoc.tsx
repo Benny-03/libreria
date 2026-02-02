@@ -19,7 +19,7 @@ function AddDoc() {
     const [addFlag, setAddFlag] = useState(false);
     const [popup, setPopup] = useState(false);
     const [book, setBook] = useState({
-        id: '',
+        id: 0,
         titolo: '',
         categoria: '',
         autori: [],
@@ -57,7 +57,7 @@ function AddDoc() {
 
     return (
         <>
-            <button onClick={toggleAddFlag}>Aggiungi</button>
+            <button onClick={toggleAddFlag}>Aggiungi libro</button>
             {addFlag && (
                 <div className='box-popup add'>
                     <div className='popup'>
