@@ -47,7 +47,7 @@ function DeleteCat () {
     }
 
     return(
-        <>  <button onClick={toggleDeleteFlag}>Elimina categoria</button>
+        <>  <button className="classic" onClick={toggleDeleteFlag}>Elimina categoria</button>
             {deleteFlag && (
                 <div className='box-popup delete-cat'>
                     <div className='popup'>

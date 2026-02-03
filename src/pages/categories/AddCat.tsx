@@ -33,7 +33,7 @@ function AddCat() {
 
     return (
         <>
-            <button onClick={toggleAddFlag}>Aggiungi categoria</button>
+            <button className="classic" onClick={toggleAddFlag}>Aggiungi categoria</button>
             {addFlag && (
                 <div className='box-popup add category'>
                     <div className='popup'>

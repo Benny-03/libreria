@@ -52,7 +52,7 @@ function ModifyDoc(props) {
 
   return (
     <>
-      <button className='btn-modify' onClick={toggleFlag}><i className='fas fa-pencil'></i></button>
+      <button className='btn-modify classic' onClick={toggleFlag}><i className='fas fa-pencil'></i></button>
       {flagModify && (
         <div className='box-popup modify'>
           <div className='popup'>

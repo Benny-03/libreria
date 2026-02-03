@@ -57,7 +57,7 @@ function AddDoc() {
 
     return (
         <>
-            <button onClick={toggleAddFlag}>Aggiungi libro</button>
+            <button className="classic"  onClick={toggleAddFlag}>Aggiungi libro</button>
             {addFlag && (
                 <div className='box-popup add'>
                     <div className='popup'>

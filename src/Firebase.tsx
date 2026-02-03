@@ -178,7 +178,7 @@ export const signInUser = async (email: string, password: string) => {
     }
 }
 
-export const logOutUser = async () => {
+export const logoutUser = async () => {
     try {
         await signOut(auth);
     } catch (error) {

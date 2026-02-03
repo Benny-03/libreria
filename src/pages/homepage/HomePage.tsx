@@ -1,5 +1,5 @@
 import '../../css/homepage.css';
-import Sidebar from '../../Sidebar';
+import Sidebar from '../sidebar/Sidebar';
 import DeleteDoc from './DeleteDoc';
 import ModifyDoc from './ModifyDoc';
 import AddDoc from './AddDoc';

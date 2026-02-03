@@ -27,7 +27,7 @@ function DeleteDoc (props) {
 
     return(
         <>
-            <button className='btn-delete' onClick={toggleRemoveFlag}><i className='fas fa-trash'></i></button>
+            <button className='btn-delete classic' onClick={toggleRemoveFlag}><i className='fas fa-trash'></i></button>
             {removeFlag && (
                 <div className='box-popup remove book'>
                     <div className='popup'>

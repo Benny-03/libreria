@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { AddDocument } from './Firebase';
+import { AddDocument, AddCategory } from './Firebase';
 import { useAuth } from './state';
 import './css/google-books.css';
 
 function GoogleBooks() {
-  const { setBooks, books } = useAuth();
+  const { setBooks, category } = useAuth();
   const [isbn, setIsbn] = useState('');
   const [flag, setflag] = useState(false);
   const [searchResult, setSearchResult] = useState({
@@ -70,6 +70,7 @@ function GoogleBooks() {
         category: info.categories?.[0] || '',
       });
 
+      toggleFlag();
       togglePopup();
     } catch (err) {
       setMessage('Errore durante la ricerca del libro');
@@ -80,21 +81,43 @@ function GoogleBooks() {
   }
 
   const addBook = async () => {
-    //se la categoria del libro non c'è aggiungerla
-      //const flag = await AddDocument(searchResult.isbn, searchResult.title, searchResult.authors, searchResult.publishedDate, searchResult.publisher, searchResult.category);
-      if (flag) {
-          setMessage('Il libro è stato aggiunto');
-          //setBooks(prevBooks => [...prevBooks, searchResult]);
-      } else {
-          setMessage('Il libro è già presente');
+    let present = false;
+    
+    category.forEach((cat: string) => {
+      if (typeof cat !== 'string') return;
+
+      if (searchResult.category.toLowerCase().includes(cat.toLowerCase())) {
+        searchResult.category = cat;
+        present = true;
       }
-      togglePopup();
-      togglePopupConferma();
+    });
+
+    if (!present) { 
+      const newCategory = await AddCategory(searchResult.category);
+      if (newCategory) {
+        category.push(searchResult.category);
+      }
+    }
+    
+    const flag = await AddDocument(searchResult.isbn, searchResult.title, searchResult.authors, searchResult.publishedDate, searchResult.publisher, searchResult.category);
+    if (flag) {
+        setMessage('Il libro è stato aggiunto');
+        setBooks(prevBooks => [...prevBooks, searchResult]);
+    } else {
+        setMessage('Il libro è già presente');
+    }
+    togglePopup();
+    togglePopupConferma();
+  }
+
+  const exit = () => {
+    togglePopupConferma();
+    window.location.reload();
   }
 
   return (
     <div className="google-books">
-      <button onClick={toggleFlag}>Ricerca libro tramite ISBN</button>
+      <button className='classic' onClick={toggleFlag}>Ricerca libro tramite ISBN</button>
         {flag && (
           <div className='box-popup google-books-popup'>
               <div className='popup'>
@@ -137,7 +160,7 @@ function GoogleBooks() {
         <div className='box-popup'>
             <div className='popup'>
                 <h1 style={{ textAlign: "center" }}>{message}</h1>
-                <button onClick={togglePopupConferma}>Chiudi</button>
+                <button onClick={exit}>Chiudi</button>
             </div>
         </div>
       )}

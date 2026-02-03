@@ -19,6 +19,7 @@
     gap: 15px;
     width: 200px;
     background-color: #FCFCFC;
+    justify-content: space-between;
 }
 
 .sidebar.mobile-only {
@@ -90,10 +91,20 @@
     font-size: 25px;
     color: white;
     font-weight: 900;
+    padding: 20px;
 }
 
 .sidebar .utente:hover {
    text-decoration: none;
+}
+
+.sidebar .logout {
+    width: 100%;
+    background-color: var(--red);
+}
+
+.sidebar .logout:hover {
+    background-color: darkred;
 }
 
 @media screen and (max-width: 768px) {

@@ -1,5 +1,5 @@
 import '../../css/homepage.css';
-import Sidebar from '../../Sidebar';
+import Sidebar from '../sidebar/Sidebar';
 import { useAuth } from '../../state';
 import AddCat from './AddCat';
 import DeleteDoc from '../homepage/DeleteDoc';
