@@ -1,14 +1,9 @@
-import '../../css/homepage.css';
-import Sidebar from '../sidebar/Sidebar';
-import DeleteDoc from './DeleteDoc';
-import ModifyDoc from './ModifyDoc';
-import AddDoc from './AddDoc';
-import { useAuth } from '../../state';
-import { useState } from 'react';
-import GoogleBooks from '../../GoogleBooks';
-import FavouriteBook from './FavouriteBook';
+import Sidebar from "../sidebar/Sidebar";
+import { useState } from "react";
+import { useAuth } from "../../state";
+import FavouriteBook from "../homepage/FavouriteBook";
 
-function HomePage() {
+const Favourites = () => {
     const { books } = useAuth();
     const [search, setSearch] = useState('');
 
@@ -29,12 +24,11 @@ function HomePage() {
         );
     });
 
-
     return (
-        <div className='home-page'>
+        <div className='home-page favourites'>
             <Sidebar />
             <div className='site-content'>
-                <h1>Raccolta libri</h1>
+                <h1>Preferiti</h1>
                 <div className='add-book'>
                     <div style={{display:'flex', gap:'10px', width:'32%'}}>
                         <i className="fas fa-search"></i>
@@ -45,10 +39,6 @@ function HomePage() {
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div style={{display:'flex', flexDirection: 'row', gap: '10px'}}>
-                        <AddDoc />
-                        <GoogleBooks />
-                    </div>
                 </div>
                 <div className='table'>
                     <table>
@@ -56,7 +46,6 @@ function HomePage() {
                             <tr>
                                 <th>ISBN</th>
                                 <th>Titolo</th>
-                                <th>Categoria</th>
                                 <th>Autori</th>
                                 <th>Casa editrice</th>
                                 <th>Anno di pubblicazione</th>
@@ -64,16 +53,13 @@ function HomePage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredBooks.map((book, index) => {
-                                if (!book.id || !book.autori ) {
-                                    return null;
-                                }
+                            {filteredBooks.map((book) => {
+                                if (!book.id || !book.autori || !book.preferito) return null;
 
                                 return (
-                                    <tr key={index}>
+                                    <tr key={book.id}>
                                         <td>{book.id}</td>
                                         <td>{book.titolo}</td>
-                                        <td>{book.categoria}</td>
                                         <td>{book.autori.map((autore: string) => {
                                             return (
                                                 <span key={autore}>
@@ -83,13 +69,7 @@ function HomePage() {
                                         })}</td>
                                         <td>{book.casa_editrice}</td>
                                         <td>{book.anno_pubblicazione}</td>
-                                        <td>
-                                            <div className='box-btn'>
-                                                <DeleteDoc id={book.id}/>
-                                                <ModifyDoc book={book}/>
-                                                <FavouriteBook id={book.id} />
-                                            </div>
-                                        </td>
+                                        <td><FavouriteBook id={book.id} /></td>
                                     </tr>
                                 )
                             })}
@@ -101,4 +81,4 @@ function HomePage() {
     )
 }
 
-export default HomePage;
+export default Favourites;

@@ -24,7 +24,8 @@ function AddDoc() {
         categoria: '',
         autori: [],
         casa_editrice: '',
-        anno_pubblicazione: ''
+        anno_pubblicazione: '',
+        preferito: false
     });
 
     const toggleAddFlag = () => {
@@ -36,7 +37,7 @@ function AddDoc() {
     }
 
     const addBook = async () => {
-        const flag = await AddDocument(book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria);
+        const flag = await AddDocument(book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria, book.preferito);
         if (flag) {
             setMessage('Il libro è stato aggiunto');
             setBooks(prevBooks => [...prevBooks, book]);

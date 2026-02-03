@@ -69,6 +69,13 @@ th {
     justify-content: space-between;
 }
 
+.box-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+} 
+
 .classic {
     margin: 0;
     width: auto;
@@ -204,6 +211,26 @@ th {
 
 .box-popup.delete-cat select {
     margin: 30px 0;
+}
+
+.favourite-btn {
+    background: transparent;
+    color: var(--red);
+    margin: 0;
+    padding-left: 20px;
+    font-size: 20px;
+}
+
+.favourite-btn:hover {
+    background: transparent;
+}
+
+.none {
+    display: none;
+}
+
+.favourite {
+    display: none;
 }
 
 @media screen and (max-width: 768px) {

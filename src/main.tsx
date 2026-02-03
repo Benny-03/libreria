@@ -5,6 +5,7 @@ import HomePage from './pages/homepage/HomePage'
 import Login from './pages/access/Login'
 import Register from './pages/access/Register'
 import Categories from './pages/categories/Categories'
+import Favourites from './pages/favourites/Favourites'
 import { AuthProvider } from './state'
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
@@ -17,6 +18,7 @@ root.render(
         <Route path='/library/register/' element={<Register />} />
         <Route path='/library/home/' element={<HomePage />} />
         <Route path='/library/categories/' element={<Categories />} />
+        <Route path='/library/favourites/' element={<Favourites />} />
       </Routes>
     </AuthProvider>
   </BrowserRouter>

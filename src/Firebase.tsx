@@ -17,8 +17,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* FIRESTORE */
-export const AddDocument = async (isbn: number, title: string, authors: string, date: number, house: string, category: string) => {
+export const AddDocument = async (isbn: number, title: string, authors: string, date: number, house: string, category: string, preferito: boolean) => {
     const document = await GetDocument(isbn);
     if (document.length > 1) {
         console.log("Il libro è già presente");
@@ -30,7 +29,8 @@ export const AddDocument = async (isbn: number, title: string, authors: string, 
             casa_editrice: house,
             titolo: title,
             categoria: category,
-            id: isbn
+            id: isbn,
+            preferito: preferito
         });
         console.log("Il libro è stato aggiunto");
         return true;
@@ -53,14 +53,22 @@ export const AddCategory = async (category: string) => {
     }
 }
 
-export const UpdateDocument = async (isbn: number, title: string, authors: string, date: number, house: string, category: string) => {
+export const UpdateDocument = async (isbn: number, title: string, authors: string, date: number, house: string, category: string, preferito: boolean) => {
     await updateDoc(doc(db, "libri", isbn.toString()), {
         anno_pubblicazione: date,
         autori: authors,
         casa_editrice: house,
         titolo: title,
         categoria: category,
-        id: isbn
+        id: isbn,
+        preferito: preferito
+    });
+}
+
+export const UpdateSingleValue = async (isbn: number, field: string, value: string | number | boolean) => {
+    const bookRef = doc(db, "libri", isbn.toString());
+    await updateDoc(bookRef, {
+        [field]: value
     });
 }
 

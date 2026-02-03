@@ -27,6 +27,10 @@ function Sidebar() {
                         <i className='fas fa-tags'></i>
                         <p style={{fontSize: "18px"}}>Categorie</p>
                     </a>
+                    <a className='link favourites' href='/library/favourites'>
+                        <i className='fas fa-heart'></i>
+                        <p style={{fontSize: "18px"}}>Preferiti</p>
+                    </a>
                 </div>
             </div>
             <LogoutButton />

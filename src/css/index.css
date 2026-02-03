@@ -72,6 +72,14 @@ body {
     content: '\f002';
 }
 
+.fa-heart-o::before {
+    content: '\f08a';
+}
+
+.fa-heart::before {
+    content: '\f004';
+}
+
 button {
     cursor: pointer;
     border: none;

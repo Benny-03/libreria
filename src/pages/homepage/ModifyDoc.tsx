@@ -24,7 +24,8 @@ function ModifyDoc(props) {
     autori: props.book.autori,
     casa_editrice: props.book.casa_editrice,
     anno_pubblicazione: props.book.anno_pubblicazione,
-    categoria: props.book.categoria
+    categoria: props.book.categoria,
+    preferito: props.book.preferito
   });
 
   const toggleFlag = () => {
@@ -36,7 +37,7 @@ function ModifyDoc(props) {
   }
 
   const modifyBook = async () => {
-    await UpdateDocument(book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria);
+    await UpdateDocument(book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria, book.preferito);
     setBooks(prevBooks => prevBooks.map(b => b.id === book.id ? book : b));
     setPopup(true);
     setFlagModify(false);
@@ -94,7 +95,6 @@ function ModifyDoc(props) {
                         <option key={index} value={cat.categoria}>{cat.categoria}</option>
                       )
                     })}
-                    <option value="Nessuna">Nessuna</option>
                   </select>
                 </label>
               </div>
