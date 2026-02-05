@@ -1,7 +1,7 @@
 import Sidebar from "../sidebar/Sidebar";
 import { useState } from "react";
 import { useAuth } from "../../state";
-import FavouriteBook from "../homepage/FavouriteBook";
+import FavouriteBook from "./FavouriteBook";
 
 const Favourites = () => {
     const { books } = useAuth();
@@ -69,7 +69,7 @@ const Favourites = () => {
                                         })}</td>
                                         <td>{book.casa_editrice}</td>
                                         <td>{book.anno_pubblicazione}</td>
-                                        <td><FavouriteBook id={book.id} /></td>
+                                        <td><FavouriteBook id={book.id} preferito={book.preferito} /></td>
                                     </tr>
                                 )
                             })}

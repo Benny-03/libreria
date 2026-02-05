@@ -6,6 +6,7 @@ import DeleteDoc from '../homepage/DeleteDoc';
 import ModifyDoc from '../homepage/ModifyDoc';
 import { useState } from 'react';
 import DeleteCat from './DeleteCat';
+import FavouriteBook from '../favourites/FavouriteBook';
 
 function Categories() {
     const { category, books } = useAuth();
@@ -99,9 +100,13 @@ function Categories() {
                                                         })}</td>
                                                         <td>{book.casa_editrice}</td>
                                                         <td>{book.anno_pubblicazione}</td>
-                                                        <td className='box-btn'>
-                                                            <DeleteDoc id={book.id}/>
-                                                            <ModifyDoc book={book}/>
+                                                        <td >
+                                                            <div className='box-btn'>
+                                                                <DeleteDoc id={book.id}/>
+                                                                <ModifyDoc book={book}/>
+                                                                <FavouriteBook id={book.id} preferito={book.preferito} />
+                                                            </div>
+                                                            
                                                         </td>
                                                     </tr>
                                                 )

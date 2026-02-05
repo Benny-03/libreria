@@ -6,7 +6,7 @@ import AddDoc from './AddDoc';
 import { useAuth } from '../../state';
 import { useState } from 'react';
 import GoogleBooks from '../../GoogleBooks';
-import FavouriteBook from './FavouriteBook';
+import FavouriteBook from '../favourites/FavouriteBook';
 
 function HomePage() {
     const { books } = useAuth();
@@ -87,7 +87,7 @@ function HomePage() {
                                             <div className='box-btn'>
                                                 <DeleteDoc id={book.id}/>
                                                 <ModifyDoc book={book}/>
-                                                <FavouriteBook id={book.id} />
+                                                <FavouriteBook id={book.id} preferito={book.preferito} />
                                             </div>
                                         </td>
                                     </tr>
