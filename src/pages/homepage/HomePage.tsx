@@ -7,6 +7,7 @@ import { useAuth } from '../../state';
 import { useState } from 'react';
 import GoogleBooks from '../../GoogleBooks';
 import FavouriteBook from '../favourites/FavouriteBook';
+import ConsigliLibri from '../../ConsigliLibri';
 
 function HomePage() {
     const { books } = useAuth();
@@ -97,6 +98,7 @@ function HomePage() {
                     </table>
                 </div>
             </div>
+            <ConsigliLibri libri={books} />
         </div>
     )
 }
