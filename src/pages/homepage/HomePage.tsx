@@ -7,7 +7,7 @@ import { useAuth } from '../../state';
 import { useState } from 'react';
 import GoogleBooks from '../../GoogleBooks';
 import FavouriteBook from '../favourites/FavouriteBook';
-import ConsigliLibri from '../../ConsigliLibri';
+import ConsigliLibri from './ConsigliLibri';
 
 function HomePage() {
     const { books } = useAuth();
@@ -29,7 +29,6 @@ function HomePage() {
             )
         );
     });
-
 
     return (
         <div className='home-page'>
