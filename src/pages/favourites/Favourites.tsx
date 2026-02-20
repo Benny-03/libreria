@@ -2,6 +2,7 @@ import Sidebar from "../sidebar/Sidebar";
 import { useState } from "react";
 import { useAuth } from "../../state";
 import FavouriteBook from "./FavouriteBook";
+import "../../css/favouritespage.css";
 
 const Favourites = () => {
     const { books } = useAuth();

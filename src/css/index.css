@@ -27,7 +27,7 @@ body {
     scroll-behavior: smooth;
     padding: 0;
     margin: 0;
-    height: 100%;
+    height: auto;
     width: 100%;
 }
 
@@ -80,6 +80,10 @@ body {
     content: '\f004';
 }
 
+.fa-add::before {
+    content: '\f067';
+}
+
 button {
     cursor: pointer;
     border: none;
@@ -111,4 +115,65 @@ select {
 input:focus {
     outline: none; 
     box-shadow: none; 
+}
+
+.table {
+    background-color: white;
+    padding: 25px;
+    border: 1px solid var(--blue);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1092px;
+}
+
+thead {
+    text-align: center;
+    font-size: 18px;
+    color: var(--dark-blue);
+}
+
+tbody {
+    text-align: center;
+}
+
+tr {
+    height: auto;
+}
+
+tbody tr:hover {
+    background-color: rgb(163, 220, 255, 0.4);
+}
+
+td,
+th {
+    padding: 10px;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+}
+
+th {
+    padding: 10px 0px;
+    width: 10%;
+}
+
+.box-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+} 
+
+.classic {
+    margin: 0;
+    width: auto;
+    background: var(--blue);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.classic:hover {
+    background: var(--dark-blue);
 }

@@ -1,57 +1,91 @@
-import { useState } from 'react';
-import { gemini } from '../../geminiManager';
+import { useState } from "react";
+import { gemini } from "../../geminiManager";
 
-function ConsigliLibri ( books ) {
-  const [recommendations, setRecommendations] = useState<string[]>([]);
+type Book = {
+  isbn: string;
+  title: string;
+  author: string;
+};
+
+type Props = {
+  libri: {
+    id: string;
+    title: string;
+    author: string;
+    preferito: boolean;
+  }[];
+};
+
+function ConsigliLibri({ libri }: Props) {
+  const [recommendations, setRecommendations] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
-  
+
   const getRecommendations = async () => {
-    if(loading) return; // Evita chiamate multiple
+    if (loading) return;
     setLoading(true);
 
-    const favoriteBooks = books.libri.filter(b => b.preferito);
+    const favoriteBooks = libri.filter((b) => b.preferito);
+    const booksList = favoriteBooks.map((b) => `- ${b.titolo} ${b.autori ? "di " + b.autori : ""}`).join("\n");
+    console.log("Books list for prompt:", booksList);
+
     const prompt = `
-      Ho questi libri:
-      ${books.libri.map(b => `- ${b.title} di ${b.author} (${b.genre})`).join('\n')}
-      I miei preferiti sono:
-      ${favoriteBooks.map(b => `- ${b.title}`).join('\n')}
-      Consigliami 5 libri simili soprattutto ai preferiti.
-      Rispondi SOLO in formato JSON così:
-      {
-        id: string,
-        title: string,
-        author: string,
-        genere: string,
-        case_editrice: string,
-        anno_pubblicazione: number
-      }
-    `;
+      I miei libri preferiti:
+      ${booksList}
+
+      Consigliami 5 libri simili.
+      Rispondi SOLO con un array JSON valido nel formato:
+      [
+        {
+          "isbn": "string",
+          "title": "string",
+          "author": "string"
+        }
+      ]
+      `;
 
     try {
       const response = await gemini(prompt);
-      const parsed = JSON.parse(response);
-      setRecommendations(parsed.recommendations);
-    } catch (error) {
-      console.error(error);
-    }
+      const cleaned = response.replace(/```json|```/g, "").trim();
+      const jsonStart = cleaned.indexOf("[");
+      const jsonEnd = cleaned.lastIndexOf("]") + 1;
 
-    setLoading(false);
+      if (jsonStart === -1 || jsonEnd === -1) {
+        throw new Error("Nessun array JSON trovato nella risposta");
+      }
+
+      const jsonString = cleaned.substring(jsonStart, jsonEnd);
+      const parsed: Book[] = JSON.parse(jsonString);
+      setRecommendations(parsed);
+      console.log("Parsed recommendations:", parsed);
+
+    } catch (error) {
+      console.error("Errore parsing:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div>
-      <h2>Consigli personalizzati</h2>
-      <button onClick={getRecommendations}>
-        {loading ? 'Caricamento...' : 'Genera consigli'}
-      </button>
+    <div className="section-consigli">
+      <div className="box">
+        <h2 style={{marginBottom: "0"}}>Consigli personalizzati</h2>
 
-      <ul>
-        {recommendations.map((rec, index) => (
-          <li key={index}>{rec}</li>
+        <button onClick={getRecommendations} disabled={loading} className="btn-consigli" style={{margin: "0"}}>
+          {loading ? "Caricamento..." : "Genera consigli"}
+        </button>
+      </div>
+      
+
+      <div className="lista-consigli">
+        {recommendations.map((rec) => (
+          <div key={rec.isbn} style={{display: "flex", flexDirection: "row", gap: "10px", alignItems: "center"}}>
+            <button className='btn-add classic'><i className='fas fa-add'></i></button>
+            <p>{rec.title} di {rec.author}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
-};
+}
 
 export default ConsigliLibri;

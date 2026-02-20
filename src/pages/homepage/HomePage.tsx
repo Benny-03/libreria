@@ -34,70 +34,72 @@ function HomePage() {
         <div className='home-page'>
             <Sidebar />
             <div className='site-content'>
-                <h1>Raccolta libri</h1>
-                <div className='add-book'>
-                    <div style={{display:'flex', gap:'10px', width:'32%'}}>
-                        <i className="fas fa-search"></i>
-                        <input
-                            type="text"
-                            placeholder="Cerca per titolo, autore, ISBN, editore o anno"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
+                <div className='books'>
+                    <h1>Raccolta libri</h1>
+                    <div className='add-book'>
+                        <div style={{display:'flex', gap:'10px', width:'32%'}}>
+                            <i className="fas fa-search"></i>
+                            <input
+                                type="text"
+                                placeholder="Cerca per titolo, autore, ISBN, editore o anno"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                        </div>
+                        <div style={{display:'flex', flexDirection: 'row', gap: '10px'}}>
+                            <AddDoc />
+                            <GoogleBooks />
+                        </div>
                     </div>
-                    <div style={{display:'flex', flexDirection: 'row', gap: '10px'}}>
-                        <AddDoc />
-                        <GoogleBooks />
-                    </div>
-                </div>
-                <div className='table'>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ISBN</th>
-                                <th>Titolo</th>
-                                <th>Categoria</th>
-                                <th>Autori</th>
-                                <th>Casa editrice</th>
-                                <th>Anno di pubblicazione</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredBooks.map((book, index) => {
-                                if (!book.id || !book.autori ) {
-                                    return null;
-                                }
+                    <div className='table'>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ISBN</th>
+                                    <th>Titolo</th>
+                                    <th>Categoria</th>
+                                    <th>Autori</th>
+                                    <th>Casa editrice</th>
+                                    <th>Anno di pubblicazione</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredBooks.map((book, index) => {
+                                    if (!book.id || !book.autori ) {
+                                        return null;
+                                    }
 
-                                return (
-                                    <tr key={index}>
-                                        <td>{book.id}</td>
-                                        <td>{book.titolo}</td>
-                                        <td>{book.categoria}</td>
-                                        <td>{book.autori.map((autore: string) => {
-                                            return (
-                                                <span key={autore}>
-                                                    {autore}, <br />
-                                                </span>
-                                            )
-                                        })}</td>
-                                        <td>{book.casa_editrice}</td>
-                                        <td>{book.anno_pubblicazione}</td>
-                                        <td>
-                                            <div className='box-btn'>
-                                                <DeleteDoc id={book.id}/>
-                                                <ModifyDoc book={book}/>
-                                                <FavouriteBook id={book.id} preferito={book.preferito} />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
+                                    return (
+                                        <tr key={index}>
+                                            <td>{book.id}</td>
+                                            <td>{book.titolo}</td>
+                                            <td>{book.categoria}</td>
+                                            <td>{book.autori.map((autore: string) => {
+                                                return (
+                                                    <span key={autore}>
+                                                        {autore}, <br />
+                                                    </span>
+                                                )
+                                            })}</td>
+                                            <td>{book.casa_editrice}</td>
+                                            <td>{book.anno_pubblicazione}</td>
+                                            <td>
+                                                <div className='box-btn'>
+                                                    <DeleteDoc id={book.id}/>
+                                                    <ModifyDoc book={book}/>
+                                                    <FavouriteBook id={book.id} preferito={book.preferito} />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                <ConsigliLibri libri={books} />
             </div>
-            <ConsigliLibri libri={books} />
         </div>
     )
 }

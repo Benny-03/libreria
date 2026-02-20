@@ -1,0 +1,15 @@
+.favourite-btn {
+    background: transparent;
+    color: var(--red);
+    margin: 0;
+    padding-left: 20px;
+    font-size: 20px;
+}
+
+.favourite-btn:hover {
+    background: transparent;
+}
+
+.favourite {
+    display: none;
+}

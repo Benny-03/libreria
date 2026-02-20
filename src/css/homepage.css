@@ -1,6 +1,6 @@
 .home-page {
     width: 100%;
-    height: 100%;
+    height: stretch;
     display: flex;
     background-color: #F0F0F0;
 }
@@ -8,10 +8,16 @@
 .home-page .site-content {
     width: calc(100% - 200px);
     height: 100%;
+    padding: 0px 20px 20px 20px;
     display: flex;
     flex-direction: column;
-    padding: 0px 20px 20px 20px;
-    gap: 20px;
+    gap: 40px;
+}
+
+.home-page .site-content .books {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .home-page .site-content h1 {
@@ -20,48 +26,6 @@
     letter-spacing: 3px;
     font-weight: 900;
     font-size: 36px;
-}
-
-.table {
-    background-color: white;
-    padding: 25px;
-    border: 1px solid var(--blue);
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 1092px;
-}
-
-thead {
-    text-align: center;
-    font-size: 18px;
-    color: var(--dark-blue);
-}
-
-tbody {
-    text-align: center;
-}
-
-tr {
-    height: auto;
-}
-
-tbody tr:hover {
-    background-color: rgb(163, 220, 255, 0.4);
-}
-
-td,
-th {
-    padding: 10px;
-    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
-}
-
-th {
-    padding: 10px 0px;
-    width: 10%;
 }
 
 .add-book {
@@ -213,24 +177,41 @@ th {
     margin: 30px 0;
 }
 
-.favourite-btn {
-    background: transparent;
-    color: var(--red);
-    margin: 0;
-    padding-left: 20px;
-    font-size: 20px;
-}
-
-.favourite-btn:hover {
-    background: transparent;
-}
-
 .none {
     display: none;
 }
 
-.favourite {
-    display: none;
+/* SEZIONE CONSIGLI */
+.section-consigli {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btn-consigli {
+    width: 200px;
+    padding: 10px;
+}
+
+.section-consigli .box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.section-consigli .btn-add {
+    border-radius: 50%;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fa-add {
+    font-size: 10px;
 }
 
 @media screen and (max-width: 768px) {

@@ -2,23 +2,36 @@
 // npm install @google/genai mime
 // npm install -D @types/node
 
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI } from "@google/genai";
 
 export const gemini = async (prompt: string) => {
-  const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_KEY });
-
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.0-flash',
-    contents: [
-      {
-        role: 'user',
-        parts: [{ text: prompt }],
-      },
-    ],
-    config: {
-      responseMimeType: 'application/json',
-    },
+  const ai = new GoogleGenAI({
+    apiKey: import.meta.env.VITE_GEMINI_KEY,
   });
+  const config = {
+    responseMimeType: "application/json",
+  };
+  const model = "gemini-2.5-flash";
+  const contents = [
+    {
+      role: "user",
+      parts: [
+        {
+          text: prompt,
+        },
+      ],
+    },
+  ];
 
-  return response.text;
+  const response = await ai.models.generateContentStream({
+    model,
+    config,
+    contents,
+  });
+  let result = "";
+  for await (const chunk of response) {
+    result += chunk.text;
+  }
+
+  return result;
 };
