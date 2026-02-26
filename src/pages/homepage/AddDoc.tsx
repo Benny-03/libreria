@@ -104,7 +104,6 @@ function AddDoc() {
                                                 <option key={index} value={cat.categoria}>{cat.categoria}</option>
                                             )
                                         })}
-                                        <option value="Nessuna">Nessuna</option>
                                     </select>
                                 </label>
                             </div>

@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             }
         };
         fetchCategories();
-    }, []);
+    }, [books.length, category.length]);
 
     return (
         <AuthContext.Provider 

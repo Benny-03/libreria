@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../../state";
-import { DeleteDocument } from "../../Firebase";
+import { DeleteDocument, DeleteCategory, GetDocumentWithCategory } from "../../Firebase";
 import '../../css/homepage.css';
 
 function DeleteDoc (props) {
-    const { setMessage, message, setBooks } = useAuth();
+    const { setMessage, message, setBooks} = useAuth();
     const [popup, setPopup] = useState(false);
     const [removeFlag, setRemoveFlag] = useState(false);
 
@@ -20,9 +20,15 @@ function DeleteDoc (props) {
         await DeleteDocument(props.id);
         setBooks(prevBooks => prevBooks.filter(book => book.id !== props.id));
         setMessage('Il libro è stato eliminato');
+        
+        const flag = await GetDocumentWithCategory(props.category);
+        console.log(flag);
+        if(flag.length === 1 && props.category !== "nessuna") {
+            await DeleteCategory(props.category);
+        }
+
         setPopup(true);
         setRemoveFlag(false);
-        window.location.reload();
     }
 
     return(

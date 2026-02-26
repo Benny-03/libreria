@@ -1,8 +1,7 @@
 .home-page {
     width: 100%;
-    height: stretch;
+    height: 100%;
     display: flex;
-    background-color: #F0F0F0;
 }
 
 .home-page .site-content {
@@ -12,6 +11,8 @@
     display: flex;
     flex-direction: column;
     gap: 40px;
+    position: relative;
+    left: 200px;
 }
 
 .home-page .site-content .books {
@@ -186,6 +187,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding-bottom: 20px;
 }
 
 .btn-consigli {
@@ -198,6 +200,10 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+}
+
+.section-consigli .box h2 {
+    margin: 0;
 }
 
 .section-consigli .btn-add {

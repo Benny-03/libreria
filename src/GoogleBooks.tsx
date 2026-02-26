@@ -99,7 +99,7 @@ function GoogleBooks() {
       }
     }
     
-    const flag = await AddDocument(searchResult.isbn, searchResult.title, searchResult.authors, searchResult.publishedDate, searchResult.publisher, searchResult.category);
+    const flag = await AddDocument(searchResult.isbn, searchResult.title, searchResult.authors, searchResult.publishedDate, searchResult.publisher, searchResult.category, false);
     if (flag) {
         setMessage('Il libro è stato aggiunto');
         setBooks(prevBooks => [...prevBooks, searchResult]);
@@ -112,7 +112,6 @@ function GoogleBooks() {
 
   const exit = () => {
     togglePopupConferma();
-    window.location.reload();
   }
 
   return (

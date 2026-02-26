@@ -24,12 +24,12 @@ export const AddDocument = async (isbn: number, title: string, authors: string, 
         return false;
     }else {
         await setDoc(doc(db, "libri", isbn.toString()), {
-            anno_pubblicazione: date,
+            anno_pubblicazione: date.toString(),
             autori: authors,
             casa_editrice: house,
             titolo: title,
             categoria: category,
-            id: isbn,
+            id: isbn.toString(),
             preferito: preferito
         });
         console.log("Il libro è stato aggiunto");
@@ -87,6 +87,16 @@ export const GetDocument = async (isbn: number) => {
     const q = query(collection(db, "libri"), where("id", "==", isbn));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
+        data.push(doc.data());
+    });
+    return data;
+}
+
+export const GetDocumentWithCategory = async (category: string) => { 
+    const data = [{}];
+    const q = query(collection(db, "libri"), where("categoria", "==", category));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => { 
         data.push(doc.data());
     });
     return data;

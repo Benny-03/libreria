@@ -86,7 +86,7 @@ function HomePage() {
                                             <td>{book.anno_pubblicazione}</td>
                                             <td>
                                                 <div className='box-btn'>
-                                                    <DeleteDoc id={book.id}/>
+                                                    <DeleteDoc id={book.id} category={book.categoria} />
                                                     <ModifyDoc book={book}/>
                                                     <FavouriteBook id={book.id} preferito={book.preferito} />
                                                 </div>

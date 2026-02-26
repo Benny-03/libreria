@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { gemini } from "../../geminiManager";
+import { AddDocument, AddCategory } from "../../Firebase";
+import { useAuth } from "../../state";
 
 type Book = {
-  isbn: string;
+  isbn: number;
   title: string;
   author: string;
+  category?: string;
+  casaEditrice?: string;
+  anno_pubblicazione?: number;
 };
 
 type Props = {
@@ -17,8 +22,10 @@ type Props = {
 };
 
 function ConsigliLibri({ libri }: Props) {
+  const { setMessage, setBooks, message, setCategory } = useAuth();
   const [recommendations, setRecommendations] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
+  const [popup, setPopup] = useState(false);
 
   const getRecommendations = async () => {
     if (loading) return;
@@ -36,9 +43,12 @@ function ConsigliLibri({ libri }: Props) {
       Rispondi SOLO con un array JSON valido nel formato:
       [
         {
-          "isbn": "string",
+          "isbn": number,
           "title": "string",
-          "author": "string"
+          "author": "string",
+          "category": "string",
+          "casaEditrice": "string",
+          "anno_pubblicazione": number
         }
       ]
       `;
@@ -65,6 +75,31 @@ function ConsigliLibri({ libri }: Props) {
     }
   };
 
+  const addBook = async (rec: Book) => {
+    const authors = [rec.author];
+    const primaCategoria = rec.category.split(",")[0] || "Nessuna";
+    const flag = await AddDocument(rec.isbn, rec.title, authors, rec.anno_pubblicazione, rec.casaEditrice, primaCategoria, false);
+
+    if(rec.category) {
+      const flagCategory = await AddCategory(primaCategoria);
+      if(flagCategory) {
+        setCategory(prevCat => [...prevCat, { categoria: primaCategoria }]);
+      }
+    }
+
+    if (flag) {
+        setMessage('Il libro è stato aggiunto');
+        setBooks(prevBooks => [...prevBooks, rec]);
+    } else {
+        setMessage('Il libro è già presente');
+    }
+    setPopup(true);
+  }
+
+  const togglePopup = () => {
+    setPopup(!popup);
+  }
+
   return (
     <div className="section-consigli">
       <div className="box">
@@ -79,11 +114,19 @@ function ConsigliLibri({ libri }: Props) {
       <div className="lista-consigli">
         {recommendations.map((rec) => (
           <div key={rec.isbn} style={{display: "flex", flexDirection: "row", gap: "10px", alignItems: "center"}}>
-            <button className='btn-add classic'><i className='fas fa-add'></i></button>
+            <button className='btn-add classic' onClick={() => addBook(rec)}><i className='fas fa-add'></i></button>
             <p>{rec.title} di {rec.author}</p>
           </div>
         ))}
       </div>
+      {popup && (
+          <div className='box-popup'>
+              <div className='popup'>
+                  <h1 style={{ textAlign: "center" }}>{message}</h1>
+                  <button onClick={togglePopup}>Chiudi</button>
+              </div>
+          </div>
+      )}
     </div>
   );
 }
