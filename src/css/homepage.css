@@ -70,6 +70,10 @@
     padding-top: 10px;
 }
 
+.categories .box-popup.add form {
+    height: auto;
+}
+
 .box-popup.add .popup, .box-popup.modify .popup{
     width: 54%;
     height: 50%;
@@ -77,6 +81,10 @@
     left: 23%;
     justify-content: flex-start;
     gap: 26px;
+}
+
+.categories .box-popup.add .popup {
+    justify-content: space-between;
 }
 
 .box-popup.modify .popup {
