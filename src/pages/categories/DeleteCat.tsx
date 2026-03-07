@@ -5,7 +5,7 @@ import '../../css/homepage.css';
 import { UpdateDocument } from "../../Firebase";
 
 function DeleteCat () {
-    const { setMessage, message, setCategory, category, setBooks, books } = useAuth();
+    const { setMessage, message, setCategory, category, setBooks, books, email } = useAuth();
     const [popup, setPopup] = useState(false);
     const [deleteFlag, setDeleteFlag] = useState(false);
     const [catSelected, setCatSelected] = useState('');
@@ -19,24 +19,26 @@ function DeleteCat () {
     }
     
     const Delete = async () => {
-        await DeleteCategory(catSelected);
+        await DeleteCategory(email, catSelected);
         
         const booksToUpdate = books.filter(
-            book => book.categoria === catSelected
+            book => book.categoria === catSelected && book.user === email
         );
 
         for (const book of booksToUpdate) {
             await UpdateDocument(
+                email,
                 book.id,
                 book.titolo,
                 book.autori,
                 book.anno_pubblicazione,
                 book.casa_editrice,
-                ''
+                '',
+                book.preferito
             );
         }
-        setCategory(prevCat => prevCat.filter(cat => cat.categoria !== catSelected));
-        setBooks(prev => prev.map(book => book.categoria === catSelected
+        setCategory(prevCat => prevCat.filter(cat => cat.categoria !== catSelected || cat.user !== email));
+        setBooks(prev => prev.map(book => book.categoria === catSelected && book.user === email
                     ? { ...book, categoria: 'Nessuna' }
                     : book
             )

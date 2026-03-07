@@ -2,13 +2,13 @@ import { UpdateSingleValue } from "../../Firebase";
 import { useAuth } from "../../state";
 
 function FavouriteBook( {id, preferito}: {id: number, preferito: boolean} ) {
-    const { setBooks } = useAuth();
+    const { setBooks, email } = useAuth();
 
     const toggleFavourite = async () => {
         const newValue = !preferito;
-        await UpdateSingleValue(id, "preferito", newValue);
+        await UpdateSingleValue(email, id, "preferito", newValue);
 
-        setBooks(prev => prev.map(book => book.id === id ? { ...book, preferito: newValue } : book )
+        setBooks(prev => prev.map(book => book.id === id && book.user === email ? { ...book, preferito: newValue } : book )
         );
     };
 

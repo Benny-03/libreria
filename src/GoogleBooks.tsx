@@ -4,7 +4,7 @@ import { useAuth } from './state';
 import './css/google-books.css';
 
 function GoogleBooks() {
-  const { setBooks, category } = useAuth();
+  const { setBooks, category, email } = useAuth();
   const [isbn, setIsbn] = useState('');
   const [flag, setflag] = useState(false);
   const [searchResult, setSearchResult] = useState({
@@ -14,6 +14,8 @@ function GoogleBooks() {
     publisher: '',
     publishedDate: '',
     category: '',
+    preferito: false,
+    user: email
   });
   const [popup, setPopup] = useState(false);
   const [message, setMessage] = useState('');
@@ -68,6 +70,8 @@ function GoogleBooks() {
         publisher: info.publisher || '',
         publishedDate: year,
         category: info.categories?.[0] || '',
+        preferito: false,
+        user: email
       });
 
       toggleFlag();
@@ -93,13 +97,13 @@ function GoogleBooks() {
     });
 
     if (!present) { 
-      const newCategory = await AddCategory(searchResult.category);
+      const newCategory = await AddCategory(email, searchResult.category);
       if (newCategory) {
-        category.push(searchResult.category);
+        category.push([searchResult.category, email]);
       }
     }
     
-    const flag = await AddDocument(searchResult.isbn, searchResult.title, searchResult.authors, searchResult.publishedDate, searchResult.publisher, searchResult.category, false);
+    const flag = await AddDocument(email, searchResult.isbn, searchResult.title, searchResult.authors, searchResult.publishedDate, searchResult.publisher, searchResult.category, false);
     if (flag) {
         setMessage('Il libro è stato aggiunto');
         setBooks(prevBooks => [...prevBooks, searchResult]);

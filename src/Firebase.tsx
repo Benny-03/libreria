@@ -17,9 +17,16 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export const AddDocument = async (isbn: number, title: string, authors: string, date: number, house: string, category: string, preferito: boolean) => {
-    const document = await GetDocument(isbn);
-    if (document.length > 1) {
+export const AddDocument = async (email: string, isbn: number, title: string, authors: string, date: number, house: string, category: string, preferito: boolean) => {
+    const q = query(collection(db, "libri"),where("user", "==", email));
+    const snapshot = await getDocs(q);
+    let flag = false
+    snapshot.forEach((doc) => {
+        if (doc.data().id === isbn.toString()) {
+            flag = true; // Imposta la dimensione a 2 per indicare che il libro è già presente
+        }
+    });
+    if (flag) {
         console.log("Il libro è già presente");
         return false;
     }else {
@@ -30,51 +37,69 @@ export const AddDocument = async (isbn: number, title: string, authors: string, 
             titolo: title,
             categoria: category,
             id: isbn.toString(),
-            preferito: preferito
+            preferito: preferito,
+            user: email
         });
         console.log("Il libro è stato aggiunto");
         return true;
     }
 }
 
-export const AddCategory = async (category: string) => {
-    console.log("Aggiungo la categoria: " + category);
-    const document = await GetCategory(category.toLowerCase());
-    console.log(document);
-    if (document.length > 1) {
+export const AddCategory = async (email:string, category: string) => {
+    const q = query(collection(db, "categorie"),where("user", "==", email));
+    const snapshot = await getDocs(q);
+    let flag = false;
+    snapshot.forEach((doc) => {
+        if (doc.data().id === category.toLowerCase()) {
+            flag = true; // Imposta la dimensione a 2 per indicare che il libro è già presente
+        }
+    });
+    if (flag) {
         console.log("La categoria è già presente");
         return false;
     }else {
         await setDoc(doc(db, "categorie", category.toLowerCase()), {
-            categoria: category
+            categoria: category,
+            user: email
         });
         console.log("La categoria è stato aggiunta");
         return true;
     }
 }
 
-export const UpdateDocument = async (isbn: number, title: string, authors: string, date: number, house: string, category: string, preferito: boolean) => {
-    await updateDoc(doc(db, "libri", isbn.toString()), {
-        anno_pubblicazione: date,
-        autori: authors,
-        casa_editrice: house,
-        titolo: title,
-        categoria: category,
-        id: isbn,
-        preferito: preferito
+export const UpdateDocument = async (email:string, isbn: number, title: string, authors: string, date: number, house: string, category: string, preferito: boolean) => {
+    const q = query(collection(db, "libri"),where("user", "==", email));
+    const snapshot = await getDocs(q);
+    snapshot.forEach((doc) => {
+        if (doc.data().id === isbn.toString()) {
+            updateDoc(doc.ref, {
+                anno_pubblicazione: date,
+                autori: authors,
+                casa_editrice: house,
+                titolo: title,
+                categoria: category,
+                id: isbn,
+                preferito: preferito
+            });
+        }
     });
 }
 
-export const UpdateSingleValue = async (isbn: number, field: string, value: string | number | boolean) => {
-    const bookRef = doc(db, "libri", isbn.toString());
-    await updateDoc(bookRef, {
-        [field]: value
+export const UpdateSingleValue = async (email: string, isbn: number, field: string, value: string | number | boolean) => {
+    const q = query(collection(db, "libri"),where("user", "==", email));
+    const snapshot = await getDocs(q);
+    snapshot.forEach((doc) => {
+        if (doc.data().id === isbn.toString()) {
+            updateDoc(doc.ref, {
+                [field]: value
+            });
+        }
     });
 }
 
-export const GetDocuments = async () => {
+export const GetDocuments = async (email: string) => {
     const data = [{}];
-    const q = query(collection(db, "libri"));
+    const q = query(collection(db, "libri"), where("user", "==", email));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         data.push(doc.data());
@@ -82,19 +107,21 @@ export const GetDocuments = async () => {
     return data;
 }
 
-export const GetDocument = async (isbn: number) => {
+export const GetDocument = async (email: string, isbn: number) => {
     const data = [{}];
-    const q = query(collection(db, "libri"), where("id", "==", isbn));
+    const q = query(collection(db, "libri"), where("user", "==", email));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-        data.push(doc.data());
+        if (doc.data().id === isbn.toString()) {
+            data.push(doc.data());
+        }
     });
     return data;
 }
 
-export const GetDocumentWithCategory = async (category: string) => { 
+export const GetDocumentWithCategory = async (email: string, category: string) => { 
     const data = [{}];
-    const q = query(collection(db, "libri"), where("categoria", "==", category));
+    const q = query(collection(db, "libri"), where("user", "==", email), where("categoria", "==", category));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => { 
         data.push(doc.data());
@@ -102,9 +129,9 @@ export const GetDocumentWithCategory = async (category: string) => {
     return data;
 }
 
-export const GetCategories = async () => {
+export const GetCategories = async (email: string) => {
     const data = [{}];
-    const q = query(collection(db, "categorie"));
+    const q = query(collection(db, "categorie"), where("user", "==", email));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         data.push(doc.data());
@@ -112,28 +139,38 @@ export const GetCategories = async () => {
     return data;
 }
 
-export const GetCategory = async (category: string) => {
+export const GetCategory = async (email: string, category: string) => {
     const data = [{}];
-    const q = query(collection(db, "categorie"), where("id", "==", category.toLowerCase()));
+    const q = query(collection(db, "categorie"), where("user", "==", email));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-        data.push(doc.data());
+        if (doc.data().categoria === category) {
+            data.push(doc.data());
+        }
     });
     return data;
 }
 
-export const DeleteDocument = async (isbn: number) => {
-    await deleteDoc(doc(db, "libri", isbn.toString()));
+export const DeleteDocument = async (email: string, isbn: number) => {
+    const q = query(collection(db, "libri"), where("user", "==", email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        if (doc.data().id === isbn.toString()) {
+            deleteDoc(doc.ref);
+        }
+    });
 }
 
-export const DeleteCategory = async (category: string) => {
+export const DeleteCategory = async (email: string, category: string) => {
     await deleteDoc(doc(db, "categorie", category.toLowerCase()));
-    const q = query(collection(db, "libri"), where("categoria", "==", category));
+    const q = query(collection(db, "libri"), where("user", "==", email));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-        updateDoc(doc.ref, {
-            categoria: "Nessuna"
-        });
+        if (doc.data().categoria === category) {
+            updateDoc(doc.ref, {
+                categoria: "Nessuna"
+            });
+        }
     });
 }
 

@@ -3,18 +3,8 @@ import '../../css/homepage.css';
 import { GetCategories, UpdateDocument } from "../../Firebase";
 import { useAuth } from "../../state";
 
-const fetchCategories = async () => {
-  try {
-    const categories = await GetCategories();
-    return categories;
-  } catch (error) {
-    console.error('Error fetching categories:', error);
-    return [];
-  }
-}
-
 function ModifyDoc(props) {
-  const { setBooks } = useAuth();
+  const { setBooks, email } = useAuth();
   const [flagModify, setFlagModify] = useState(false);
   const [category, setCategory] = useState([]);
   const [popup, setPopup] = useState(false);
@@ -28,6 +18,16 @@ function ModifyDoc(props) {
     preferito: props.book.preferito
   });
 
+  const fetchCategories = async () => {
+    try {
+      const categories = await GetCategories(email);
+      return categories;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
+  }
+
   const toggleFlag = () => {
     setFlagModify(!flagModify);
   }
@@ -37,8 +37,8 @@ function ModifyDoc(props) {
   }
 
   const modifyBook = async () => {
-    await UpdateDocument(book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria, book.preferito);
-    setBooks(prevBooks => prevBooks.map(b => b.id === book.id ? book : b));
+    await UpdateDocument(email, book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria, book.preferito);
+    setBooks(prevBooks => prevBooks.map(b => b.id === book.id && b.user === email ? book : b));
     setPopup(true);
     setFlagModify(false);
   }

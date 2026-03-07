@@ -4,7 +4,7 @@ import { DeleteDocument, DeleteCategory, GetDocumentWithCategory } from "../../F
 import '../../css/homepage.css';
 
 function DeleteDoc (props) {
-    const { setMessage, message, setBooks} = useAuth();
+    const { setMessage, message, setBooks, email } = useAuth();
     const [popup, setPopup] = useState(false);
     const [removeFlag, setRemoveFlag] = useState(false);
 
@@ -17,14 +17,14 @@ function DeleteDoc (props) {
     }
 
     const Delete = async () => {
-        await DeleteDocument(props.id);
-        setBooks(prevBooks => prevBooks.filter(book => book.id !== props.id));
+        await DeleteDocument(email, props.id);
+        setBooks(prevBooks => prevBooks.filter(book => book.id !== props.id || book.user !== email));
         setMessage('Il libro è stato eliminato');
         
-        const flag = await GetDocumentWithCategory(props.category);
+        const flag = await GetDocumentWithCategory(email, props.category);
         console.log(flag);
         if(flag.length === 1 && props.category !== "nessuna") {
-            await DeleteCategory(props.category);
+            await DeleteCategory(email, props.category);
         }
 
         setPopup(true);

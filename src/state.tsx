@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const querySnapshot = await GetDocuments();
+                const querySnapshot = await GetDocuments(email);
                 console.log("Libri recuperati:", querySnapshot);
                 let booksData = [];
                 querySnapshot.map(doc => {
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         const fetchCategories = async () => {
             try {
-                const querySnapshot = await GetCategories();
+                const querySnapshot = await GetCategories(email);
                 console.log("categorie recuperate:", querySnapshot);
                 let data = [];
                 querySnapshot.map(doc => {

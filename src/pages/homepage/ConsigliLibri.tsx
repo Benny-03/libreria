@@ -10,6 +10,7 @@ type Book = {
   category?: string;
   casaEditrice?: string;
   anno_pubblicazione?: number;
+  user?: string;
 };
 
 type Props = {
@@ -22,7 +23,7 @@ type Props = {
 };
 
 function ConsigliLibri({ libri }: Props) {
-  const { setMessage, setBooks, message, setCategory } = useAuth();
+  const { setMessage, setBooks, message, setCategory, email } = useAuth();
   const [recommendations, setRecommendations] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
   const [popup, setPopup] = useState(false);
@@ -78,12 +79,12 @@ function ConsigliLibri({ libri }: Props) {
   const addBook = async (rec: Book) => {
     const authors = [rec.author];
     const primaCategoria = rec.category.split(",")[0] || "Nessuna";
-    const flag = await AddDocument(rec.isbn, rec.title, authors, rec.anno_pubblicazione, rec.casaEditrice, primaCategoria, false);
+    const flag = await AddDocument(email, rec.isbn, rec.title, authors, rec.anno_pubblicazione, rec.casaEditrice, primaCategoria, false);
 
     if(rec.category) {
-      const flagCategory = await AddCategory(primaCategoria);
+      const flagCategory = await AddCategory(email, primaCategoria);
       if(flagCategory) {
-        setCategory(prevCat => [...prevCat, { categoria: primaCategoria }]);
+        setCategory(prevCat => [...prevCat, { categoria: primaCategoria, user: email }]);
       }
     }
 

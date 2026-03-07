@@ -3,22 +3,13 @@ import { AddDocument, GetCategories } from "../../Firebase";
 import { useAuth } from "../../state";
 import '../../css/homepage.css';
 
-const fetchCategories = async () => {
-    try {
-        const categories = await GetCategories();
-        return categories;
-    } catch (error) {
-        console.error('Error fetching categories:', error);
-        return [];
-    }
-}
-
 function AddDoc() {
-    const { setMessage, message, setBooks } = useAuth();
+    const { setMessage, message, setBooks, email } = useAuth();
     const [category, setCategory] = useState([]);
     const [addFlag, setAddFlag] = useState(false);
     const [popup, setPopup] = useState(false);
     const [book, setBook] = useState({
+        user: email,
         id: 0,
         titolo: '',
         categoria: '',
@@ -27,6 +18,16 @@ function AddDoc() {
         anno_pubblicazione: '',
         preferito: false
     });
+
+    const fetchCategories = async () => {
+    try {
+        const categories = await GetCategories(email);
+        return categories;
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        return [];
+    }
+}
 
     const toggleAddFlag = () => {
         setAddFlag(!addFlag);
@@ -37,7 +38,7 @@ function AddDoc() {
     }
 
     const addBook = async () => {
-        const flag = await AddDocument(book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria, book.preferito);
+        const flag = await AddDocument(email, book.id, book.titolo, book.autori, book.anno_pubblicazione, book.casa_editrice, book.categoria, book.preferito);
         if (flag) {
             setMessage('Il libro è stato aggiunto');
             setBooks(prevBooks => [...prevBooks, book]);

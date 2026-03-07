@@ -4,7 +4,7 @@ import { useAuth } from "../../state";
 import '../../css/homepage.css';
 
 function AddCat() {
-    const { setMessage, message, setCategory } = useAuth();
+    const { setMessage, message, setCategory, email } = useAuth();
     const [addFlag, setAddFlag] = useState(false);
     const [popup, setPopup] = useState(false);
     const [name, setName] = useState({
@@ -20,10 +20,10 @@ function AddCat() {
     }
 
     const addCategory = async () => {
-        const flag = await AddCategory(name.categoria);
+        const flag = await AddCategory(email, name.categoria);
         if (flag) {
             setMessage('La categoria è stata aggiunta');
-            setCategory(prevCat => [...prevCat, name]);
+            setCategory(prevCat => [...prevCat, [name.categoria, email]]);
         } else {
             setMessage('La categoria è già presente');
         }
