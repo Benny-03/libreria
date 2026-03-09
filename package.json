@@ -13,7 +13,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
-    "firebase": "^10.14.1",
+    "firebase": "^12.10.0",
     "firebaseui": "^6.1.0",
     "mime": "^4.1.0",
     "react": "^19.0.0",
