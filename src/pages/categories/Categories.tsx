@@ -84,8 +84,7 @@ function Categories() {
                                     return null;
                                 }
 
-                                return (
-                                    <>  {filteredBooks.map((book) => {
+                                return filteredBooks.map((book) => {
                                             if (book.categoria === catSelected) {
                                                 return (
                                                     <tr key={book.id}>
@@ -112,9 +111,7 @@ function Categories() {
                                                 )
                                             }
                                             return null;
-                                        })}
-                                    </>
-                                )
+                                        })
                             })}
                         </tbody>
                     </table>

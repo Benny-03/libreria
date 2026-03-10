@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import '../../css/login-register.css';
-import { createUser, getUser } from '../../Firebase';
+import { createUser } from '../../Firebase';
 import { addUsers } from '../../Firebase';
 import image from '../../images/login-image.jpg';
 import { useAuth } from '../../state';
@@ -20,18 +20,17 @@ function Register() {
     const toggleOpen = () => {
         setIsOpen(!isOpen);
     }
-
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const email_utente = nome.toLowerCase() + '.' + cognome.toLowerCase() + '@studio.com';
-        setEmail(email_utente);
 
         try {
+            const email_utente = nome.toLowerCase() + '.' + cognome.toLowerCase() + '@studio.com';
             await createUser(email_utente, password);
             await addUsers(email_utente, nome, cognome, data, username);
-            const user = await getUser(email_utente);
-            localStorage.setItem('user', JSON.stringify(user));
+            setEmail(email_utente);
             setRegistered(true);
+            console.log("Registrazione completata con successo");
         } catch (error) {
             if (isFirebaseError(error)) {
                 if (error.code === 'auth/email-already-in-use') {
@@ -43,7 +42,7 @@ function Register() {
                     setPassword('');
                     setEmail('');
                     setFlagPassword(false);
-                } 
+                }
                 if (error.code === 'auth/weak-password') {
                     setFlagPassword(true);
                     setPassword('');
@@ -78,7 +77,7 @@ function Register() {
                                     </div>
                                     <div className='form-group cognome'>
                                         <i className='fas fa-user-o'></i>
-                                        <label htmlFor="nome"> Cognome:
+                                        <label htmlFor="cognome"> Cognome:
                                             <input type="text" id="cognome" autoComplete="current-surname" required onChange={(e) => setCognome(e.target.value)} />
                                         </label>
                                     </div>
@@ -128,7 +127,7 @@ function Register() {
                     <div className='popup'>
                         <h1 style={{textAlign: "center"}}>Registrazione avvenuta con successo!</h1>
                         <p style={{textAlign: "center"}}>La tua Email è: <a style={{color: "#3FB6FF", fontWeight: "bold", textDecoration: "underline", pointerEvents: "none"}}>{email}</a></p>
-                        <button onClick={() => window.location.href = '/library/home'}>Vai alla Home</button>
+                        <button onClick={() => window.location.href = '/library/'}>Accedi</button>
                     </div>
                 </div>
             )}

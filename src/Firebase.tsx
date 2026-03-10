@@ -14,7 +14,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 const db = getFirestore(app);
 
 export const AddDocument = async (email: string, isbn: number, title: string, authors: string, date: number, house: string, category: string, preferito: boolean) => {

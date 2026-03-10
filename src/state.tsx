@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { createContext, use, useEffect, useState } from "react";
-import { GetCategories, GetDocuments } from "./Firebase";
+
+import { createContext, useContext, useEffect, useState } from "react";
+import { GetCategories, GetDocuments, auth, getUser} from "./Firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const AuthContext = createContext({
     nome: '',
@@ -15,64 +17,73 @@ const AuthContext = createContext({
     setData: (value: string) => {},
     message: '',
     setMessage: (value: string) => {},
-    books: [],
-    setBooks: (value: []) => {},
-    category: [],
-    setCategory: (value: []) => {},
+    books: [] as any[],
+    setBooks: (value: any[]) => {},
+    category: [] as any[],
+    setCategory: (value: any[]) => {},
 });
 
-let userStorage = localStorage.getItem('user');
-userStorage = userStorage ? JSON.parse(userStorage) : null;
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [nome, setNome] = useState(userStorage ? userStorage.nome : '');
-    const [cognome, setCognome] = useState(userStorage ? userStorage.cognome : '');
-    const [username, setUsername] = useState(userStorage ? userStorage.username : '');
-    const [email, setEmail] = useState(userStorage ? userStorage.id : '');
-    const [data, setData] = useState(userStorage ? userStorage.data_nascita : '');
+
+    const [nome, setNome] = useState('');
+    const [cognome, setCognome] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [data, setData] = useState('');
     const [message, setMessage] = useState('');
-    const [books, setBooks] = useState([]);
-    const [category, setCategory] = useState([]);
+    const [books, setBooks] = useState<any[]>([]);
+    const [category, setCategory] = useState<any[]>([]);
 
     useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setEmail(user.email || '');
+            } else {
+                setEmail('');
+                setBooks([]);
+                setCategory([]);
+            }
+
+        });
+        return () => unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        if (!email) return;
+
+        const fetchUserData = async () => {
+            const user = await getUser(email);
+            setNome(user.nome);
+            setCognome(user.cognome);
+            setUsername(user.username);
+            setData(user.data_nascita);
+        };
+
         const fetchBooks = async () => {
             try {
-                const querySnapshot = await GetDocuments(email);
-                console.log("Libri recuperati:", querySnapshot);
-                let booksData = [];
-                querySnapshot.map(doc => {
-                    if(doc){
-                        booksData.push(doc);
-                    }
-                })
-                setBooks(booksData);
+                const data = await GetDocuments(email);
+                setBooks(data || []);
             } catch (error) {
                 console.error("Errore nel recupero dei libri:", error);
             }
         };
-        fetchBooks();
-
         const fetchCategories = async () => {
             try {
-                const querySnapshot = await GetCategories(email);
-                console.log("categorie recuperate:", querySnapshot);
-                let data = [];
-                querySnapshot.map(doc => {
-                    if(doc){
-                        data.push(doc);
-                    }
-                })
-                setCategory(data);
+                const data = await GetCategories(email);
+                setCategory(data || []);
             } catch (error) {
-                console.error("Errore nel recupero dei libri:", error);
+                console.error("Errore nel recupero delle categorie:", error);
             }
         };
+        fetchUserData();
+        fetchBooks();
         fetchCategories();
-    }, [books.length, category.length]);
+
+    }, [email]);
 
     return (
-        <AuthContext.Provider 
-            value={{ 
+        <AuthContext.Provider
+            value={{
                 nome,
                 setNome,
                 cognome,
@@ -94,6 +105,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             {children}
         </AuthContext.Provider>
     );
-}
+};
 
-export const useAuth = () => use(AuthContext);
+export const useAuth = () => useContext(AuthContext);

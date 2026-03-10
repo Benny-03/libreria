@@ -7,7 +7,8 @@ import { isFirebaseError } from '../../Firebase';
 import { useNavigate } from 'react-router';
 
 const Login = () => {
-    const { email, setEmail, message, setMessage} = useAuth();
+    const { setEmail, message, setMessage, setCognome, setNome, setUsername } = useAuth();
+    const [email, setLocalEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [flagPassword, setFlagPassword] = useState(false);
@@ -15,23 +16,24 @@ const Login = () => {
 
     const togglePopup = () => {
         setIsOpen(!isOpen);
-        setEmail('');
+        setLocalEmail('');
         setPassword('');
-    }
+    };
+
     const toggleFlagPassword = () => {
         setFlagPassword(!flagPassword);
-        setEmail('');
-        setPassword('');
-    }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const signInResponse = await signInUser(email, password);
-            localStorage.setItem('token', signInResponse.accessToken);
+            await signInUser(email, password);
             const user = await getUser(email);
-            localStorage.setItem('user', JSON.stringify(user));
             console.log('Login effettuato con successo');
+            setEmail(email);
+            setNome(user.nome);
+            setCognome(user.cognome);
+            setUsername(user.username);
             navigate('/library/home');
         } catch (error) {
             if (isFirebaseError(error)) {
@@ -53,11 +55,10 @@ const Login = () => {
             await resetPassword(email);
             console.log('Email inviata con successo');
             toggleFlagPassword();
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
-            console.log('Errore nel mandare l\'email');
+            console.log("Errore invio email");
         }
-    }
+    };
 
     return (
         <div className='root-login-page'>
@@ -71,14 +72,27 @@ const Login = () => {
                                 <div className='form'>
                                     <div className='form-group email'>
                                         <i className='fas fa-envelope-o'></i>
-                                        <label htmlFor="email"> Email:
-                                            <input type="email" id="email" autoComplete="current-email" required onChange={(e) => setEmail(e.target.value)} />
+                                        <label htmlFor="email">
+                                            Email:
+                                            <input
+                                                type="email"
+                                                id="email"
+                                                required
+                                                value={email}
+                                                onChange={(e) => setLocalEmail(e.target.value)}
+                                            />
                                         </label>
                                     </div>
                                     <div className='form-group password'>
                                         <i className='fas fa-lock'></i>
-                                        <label htmlFor="password"> Password:
-                                            <input type="password" id="password" autoComplete="current-password" required onChange={(e) => setPassword(e.target.value)} />
+                                        <label htmlFor="password">
+                                            Password:
+                                            <input
+                                                type="password"
+                                                id="password"
+                                                required
+                                                onChange={(e) => setPassword(e.target.value)}
+                                            />
                                         </label>
                                     </div>
                                 </div>
@@ -88,7 +102,9 @@ const Login = () => {
                                 <button type='submit'>Accedi</button>
                             </form>
                             <div className="register">
-                                <p>Non hai un account? <a href="/library/register" style={{ color: "#3FB6FF", fontWeight: "bold" }}>Registrati</a></p>
+                                <p>Non hai un account?
+                                    <a href="/library/register" style={{ color: "#3FB6FF", fontWeight: "bold" }}>Registrati</a>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -97,8 +113,8 @@ const Login = () => {
             {isOpen && (
                 <div className='box-popup'>
                     <div className='popup'>
-                        <h1 style={{textAlign: "center"}}>Errore durante l'accesso</h1>
-                        <p style={{textAlign: "center"}}>{message}</p>
+                        <h1 style={{ textAlign: "center" }}>Errore durante l'accesso</h1>
+                        <p style={{ textAlign: "center" }}>{message}</p>
                         <button onClick={togglePopup}>Chiudi</button>
                     </div>
                 </div>
@@ -106,22 +122,28 @@ const Login = () => {
             {flagPassword && (
                 <div className='box-popup'>
                     <div className='popup'>
-                        <h1 style={{textAlign: "center"}}>Recupero password</h1>
+                        <h1 style={{ textAlign: "center" }}>Recupero password</h1>
                         <form onSubmit={forgotPassword}>
                             <div className='form-group email'>
                                 <i className='fas fa-envelope-o'></i>
-                                <label htmlFor="email"> Email:
-                                    <input type="email" id="email" value={email} autoComplete="current-email" required onChange={(e) => setEmail(e.target.value)} />
+                                <label htmlFor="email">
+                                    Email:
+                                    <input
+                                        type="email"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setLocalEmail(e.target.value)}
+                                    />
                                 </label>
                             </div>
                             <button type='submit'>Invia</button>
                         </form>
-                        <a style={{ paddingTop: "10px", width: "40%", textAlign: "end" }} onClick={toggleFlagPassword}>chiudi</a>
+                        <a style={{ paddingTop: "10px", width: "40%", textAlign: "end" }} onClick={toggleFlagPassword}>Chiudi</a>
                     </div>
                 </div>
             )}
         </div>
-    )
-}
+    );
+};
 
 export default Login;
