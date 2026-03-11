@@ -17,6 +17,7 @@ function AddCat() {
 
     const togglePopup = () => {
         setPopup(!popup);
+        window.location.reload();
     }
 
     const addCategory = async () => {

@@ -99,6 +99,7 @@ function ConsigliLibri({ libri }: Props) {
 
   const togglePopup = () => {
     setPopup(!popup);
+    window.location.reload();
   }
 
   return (

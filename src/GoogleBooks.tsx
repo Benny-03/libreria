@@ -112,6 +112,7 @@ function GoogleBooks() {
     }
     togglePopup();
     togglePopupConferma();
+    window.location.reload();
   }
 
   const exit = () => {

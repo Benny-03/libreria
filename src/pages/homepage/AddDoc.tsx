@@ -35,6 +35,7 @@ function AddDoc() {
 
     const togglePopup = () => {
         setPopup(!popup);
+        window.location.reload();
     }
 
     const addBook = async () => {
